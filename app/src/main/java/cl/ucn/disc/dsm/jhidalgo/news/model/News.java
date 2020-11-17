@@ -27,7 +27,7 @@ public class News {
      *The Tittle.
      * Restrictions: not null, size > 2;
      */
-    private String tittle;
+    private String title;
 
     /**
      *The source
@@ -67,7 +67,7 @@ public class News {
     /**
      * The constructor.
      * @param id
-     * @param tittle
+     * @param title
      * @param source
      * @param author
      * @param url
@@ -77,9 +77,9 @@ public class News {
      * @param publishedAt
      */
 
-    public News(Long id, String tittle, String source, String author, String url, String urlImage, String description, String content, ZonedDateTime publishedAt) {
+    public News(Long id, String title, String source, String author, String url, String urlImage, String description, String content, ZonedDateTime publishedAt) {
         this.id = id;
-        this.tittle = tittle;
+        this.title = title;
         this.source = source;
         this.author = author;
         this.url = url;
@@ -100,7 +100,7 @@ public class News {
      * @return the tittle.
      */
     public String getTittle() {
-        return tittle;
+        return title;
     }
 
     /**
