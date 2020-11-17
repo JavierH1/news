@@ -57,9 +57,13 @@ public class ContractsImpl implements Contracts {
             news.add(news1);
 
         }
-
-
-
         return news;
+    }
+
+    public void saveNews(News news) {
+
+
+
+
     }
 }
