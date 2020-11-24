@@ -31,9 +31,9 @@ public class ContractsImpl implements Contracts {
      * The logger
      */
     private static final Logger log = LoggerFactory.getLogger(ContractsImpl.class);
+
     /**
      * Get the list of News.
-     *
      * @param size size of the list.
      * @return the list of News.
      */
@@ -44,7 +44,6 @@ public class ContractsImpl implements Contracts {
         final List<News> news = new ArrayList<>();
 
         // TODO: add the faker news to the list
-
 
         for(int i=0;i < 5;i++){
             Faker faker = Faker.instance();
@@ -60,9 +59,11 @@ public class ContractsImpl implements Contracts {
         return news;
     }
 
+    /**
+     *
+     * @param news to save.
+     */
     public void saveNews(News news) {
-
-
 
 
     }

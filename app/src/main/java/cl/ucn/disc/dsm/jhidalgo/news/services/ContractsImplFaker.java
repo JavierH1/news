@@ -23,11 +23,9 @@ import java.util.List;
 import cl.ucn.disc.dsm.jhidalgo.news.model.News;
 
 /**
- * The Faker implementation of {@link Contracts}
- *
+ * The Faker implementation of {@link Contracts} *
  * @author Javier Hidalgo Ochoa
  */
-
 public final class ContractsImplFaker implements Contracts {
 
     /**
@@ -43,7 +41,6 @@ public final class ContractsImplFaker implements Contracts {
     /**
      * The contructor: Generate 5 {@link News}
      */
-
     public ContractsImplFaker(){
 
         //The faker to use
@@ -62,25 +59,23 @@ public final class ContractsImplFaker implements Contracts {
                     faker.lorem().paragraph(3),
                     ZonedDateTime.now(ZoneId.of("-3"))
             ));
-
         }
     }
 
     /**
      * Get the list of News.
-     *
      * @param size size of the list.
      * @return the list of News.
      */
     @Override
     public List<News> retrieveNews(Integer size) {
+
         // The last "size" elements.
         return theNews.subList(theNews.size()-size, theNews.size());
     }
 
     /**
      * Save one News into the System.
-     *
      * @param news to save.
      */
     @Override
@@ -89,23 +84,22 @@ public final class ContractsImplFaker implements Contracts {
         //If the new is null
         if(news == null){
             System.out.println("The new is null");
-
             return;
+
         //don't allow duplicates
         } else {
             for(int i=0; i < theNews.size() ; i++){
-                if(theNews.get(i).getId() == news.getId()){
 
+                if(theNews.get(i).getId() == news.getId()){
                     System.out.println("The new is already stored");
                     return;
-
                 }
             }
         }
 
-            System.out.println("Current size: "+theNews.size());
-            this.theNews.add(news);
-            System.out.println("Current size: "+theNews.size());
+        System.out.println("Current size: "+theNews.size());
+        this.theNews.add(news);
+        System.out.println("Current size: "+theNews.size());
 
     }
 }

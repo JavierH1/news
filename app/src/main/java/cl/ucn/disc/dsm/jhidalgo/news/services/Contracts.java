@@ -16,10 +16,10 @@ import cl.ucn.disc.dsm.jhidalgo.news.model.News;
 
 /**
  * The contracts of CU/UH.
- *
  * @author Javier Hidalgo Ochoa.
  */
 public interface Contracts {
+
     /**
      * Get the list of News.
      * @param size size of the list.
