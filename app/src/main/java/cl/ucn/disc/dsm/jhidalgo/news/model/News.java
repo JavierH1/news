@@ -11,58 +11,67 @@
 package cl.ucn.disc.dsm.jhidalgo.news.model;
 
 
+import net.openhft.hashing.LongHashFunction;
+
 import org.threeten.bp.ZonedDateTime;
+
+import cl.ucn.disc.dsm.jhidalgo.news.utils.Validation;
 
 /**
  * The domain model: News.
  * @author Javier Hidalgo Ochoa.
  */
-public class News {
+public final class News {
+
     /**
      * Unique id
      */
-    private Long id;
+    private final Long id;
 
     /**
-     *The Tittle.
-     * Restrictions: not null, size > 2;
+     * The Tittle.
+     * Restrictions: not null, size > 2.
      */
-    private String title;
+    private final String title;
 
     /**
-     *The source
+     * The source
+     * Restrictions: not null, size > 2.
      */
-    private String source;
+    private final String source;
 
     /**
-     *The author.
+     * The author.
+     * Restrictions: not null, size > 2.
      */
-    private String author;
+    private final String author;
 
     /**
-     *The URL.
+     * The URL.
      */
-    private String url;
+    private final String url;
 
     /**
-     *The URL of the image.
+     * The URL of the image.
      */
-    private String urlImage;
+    private final String urlImage;
 
     /**
-     *The description.
+     * The description.
      */
-    private String description;
+    private final String description;
 
     /**
-     *The content.
+     * The content.
+     * Restrictions: not null.
      */
-    private String content;
+    private final String content;
 
     /**
-     *The date of publish.
+     * The date of publish.
+     * Restrictions: not null.
      */
-    private ZonedDateTime publishedAt;
+    private final ZonedDateTime publishedAt;
 
     /**
      * The constructor.
@@ -76,79 +85,78 @@ public class News {
      * @param content
      * @param publishedAt
      */
-
     public News(Long id, String title, String source, String author, String url, String urlImage, String description, String content, ZonedDateTime publishedAt) {
-        this.id = id;
+
+        // Validacion de title
+        Validation.minSize(title,2,"title");
         this.title = title;
+
+        // Validacion de source
+        Validation.minSize(source,2,"title");
         this.source = source;
+
+        // Validacion de author
+        Validation.minSize(author,2,"title");
         this.author = author;
+
+        // Apply the xxHash function
+        this.id = LongHashFunction.xx()
+                .hashChars(title + '|' + source + '|' + author);
+
         this.url = url;
         this.urlImage = urlImage;
         this.description = description;
+
+        Validation.notNull(content, "content");
         this.content = content;
+
+        Validation.notNull(publishedAt, "publishedAt");
         this.publishedAt = publishedAt;
     }
 
     /**
      * @return the Id.
      */
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
     /**
      * @return the tittle.
      */
-    public String getTittle() {
-        return title;
-    }
+    public String getTittle() { return title; }
 
     /**
      * @return the source.
      */
-    public String getSource() {
-        return source;
-    }
+    public String getSource() { return source; }
 
     /**
      * @return the author.
      */
-    public String getAuthor() {
-        return author;
-    }
+    public String getAuthor() { return author; }
 
     /**
      * @return the URL.
      */
-    public String getUrl() {
-        return url;
-    }
+    public String getUrl() { return url; }
 
     /**
      * @return the URL of the image.
      */
-    public String getUrlImage() {
-        return urlImage;
-    }
+    public String getUrlImage() { return urlImage; }
 
     /**
      * @return the description.
      */
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() { return description; }
 
     /**
      * @return the content.
      */
-    public String getContent() {
-        return content;
-    }
+    public String getContent() { return content; }
 
     /**
      * @return the date of publish.
      */
-    public ZonedDateTime getPublishedAt() {
-        return publishedAt;
-    }
+    public ZonedDateTime getPublishedAt() { return publishedAt; }
+
 }
