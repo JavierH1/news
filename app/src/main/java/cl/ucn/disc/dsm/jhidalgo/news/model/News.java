@@ -87,24 +87,26 @@ public final class News {
      */
     public News(Long id, String title, String source, String author, String url, String urlImage, String description, String content, ZonedDateTime publishedAt) {
 
-        // Validacion de title
+        // Validation of title
         Validation.minSize(title,2,"title");
         this.title = title;
 
-        // Validacion de source
-        Validation.minSize(source,2,"title");
+        // Validation of source
+        Validation.minSize(source,2,"source");
         this.source = source;
 
-        // Validacion de author
-        Validation.minSize(author,2,"title");
+        // Validation of author
+        Validation.minSize(author,3,"author");
         this.author = author;
 
         // Apply the xxHash function
-        this.id = LongHashFunction.xx()
-                .hashChars(title + '|' + source + '|' + author);
+        this.id = LongHashFunction.xx().hashChars(title + '|' + source + '|' + author);
 
+        // Can't be null
         this.url = url;
         this.urlImage = urlImage;
+
+        Validation.minSize(description,10, "description");
         this.description = description;
 
         Validation.notNull(content, "content");
