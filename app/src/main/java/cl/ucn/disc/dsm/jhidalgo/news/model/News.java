@@ -75,7 +75,6 @@ public final class News {
 
     /**
      * The constructor.
-     * @param id
      * @param title
      * @param source
      * @param author
