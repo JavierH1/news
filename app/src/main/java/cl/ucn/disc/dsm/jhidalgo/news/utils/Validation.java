@@ -20,7 +20,7 @@ public class Validation {
     /**
      * Check the size
      * @param value to check.
-     * @param minSize to check.
+     * @param minSize to fail.
      * @param message to throw in case of wrong size.
      */
     public static void minSize(String value, int minSize, String message){
