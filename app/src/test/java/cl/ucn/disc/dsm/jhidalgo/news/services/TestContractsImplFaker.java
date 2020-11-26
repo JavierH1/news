@@ -89,7 +89,6 @@ public class TestContractsImplFaker{
         Contracts contracts = new ContractsImplFaker();
 
         News new_News = new News(
-                Integer.toUnsignedLong(6),
                 faker.book().title(),
                 faker.name().username(),
                 faker.name().fullName(),
@@ -101,7 +100,6 @@ public class TestContractsImplFaker{
         );
 
         News new_NewsDuplicate = new News(
-                Integer.toUnsignedLong(1),
                 faker.book().title(),
                 faker.name().username(),
                 faker.name().fullName(),

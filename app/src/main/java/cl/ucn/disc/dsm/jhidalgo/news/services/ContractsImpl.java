@@ -52,7 +52,7 @@ public class ContractsImpl implements Contracts {
 
             ZonedDateTime time = ZonedDateTime.parse("2012-06-30T12:30:40Z[UTC]");
 
-            News news1 = new News(number+i, faker.lorem().sentence(), faker.app().name(), faker.name().fullName(),faker.internet().url(),faker.internet().url(),faker.lorem().sentence(),faker.lorem().paragraph(),time);
+            News news1 = new News(faker.lorem().sentence(), faker.app().name(), faker.name().fullName(),faker.internet().url(),faker.internet().url(),faker.lorem().sentence(),faker.lorem().paragraph(),time);
             news.add(news1);
 
         }
