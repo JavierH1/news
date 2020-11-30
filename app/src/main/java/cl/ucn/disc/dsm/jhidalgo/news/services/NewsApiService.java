@@ -26,7 +26,7 @@ import retrofit2.Response;
 /**
  * Testing the Contracts with NewsApi service
  *
- * @author Javier Hidalgo
+ * @author Javier Hidalgo Ochoa
  */
 public final class NewsApiService {
 
