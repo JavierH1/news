@@ -19,9 +19,21 @@
 
 package cl.ucn.disc.dsm.jhidalgo.news;
 
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
+import cl.ucn.disc.dsm.jhidalgo.news.model.News;
+import cl.ucn.disc.dsm.jhidalgo.news.services.Contracts;
+import cl.ucn.disc.dsm.jhidalgo.news.services.ContractsImplNewsApi;
 
 /**
  * The Main Class
@@ -29,6 +41,16 @@ import android.os.Bundle;
  * @autor Javier Hidalgo Ochoa
  */
 public class MainActivity extends AppCompatActivity {
+
+    /**
+     * The logger.
+     */
+    private static final Logger log = LoggerFactory.getLogger(MainActivity.class);
+
+    /**
+     * The listView.
+     */
+    protected ListView listView;
 
     /**
      * onCreate.
@@ -39,5 +61,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.listView = findViewById(R.id.am_lv_news);
+
+        // Get the news in the background thread
+        AsyncTask.execute(() -> {
+
+            // Using the contracts to get the news ..
+            Contracts contracts = new ContractsImplNewsApi("6bccb50265334579b044cc5077e600ed");
+
+            // Get the News from NewsAPI (internet!!)
+            List<News> listNews = contracts.retrieveNews(30);
+
+            // Build the simple adapter to show the list of news (String !!)
+            ArrayAdapter<String> adapter = new ArrayAdapter(
+                    this,
+                    android.R.layout.simple_list_item_1,
+                    listNews
+            );
+            // Set the adapter!
+            runOnUiThread(() -> {
+                this.listView.setAdapter(adapter);
+
+            });
+
+        });
+
+
     }
 }
