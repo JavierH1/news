@@ -21,6 +21,11 @@ import org.threeten.bp.ZonedDateTime;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import cl.ucn.disc.dsm.jhidalgo.news.model.News;
 import cl.ucn.disc.dsm.jhidalgo.news.utils.Validation;
@@ -74,7 +79,13 @@ public class ContractsImplNewsApi implements Contracts {
 
             }
             // Return the list of news
-            return news;
+            return news.stream()
+                    //Remove the duplicates (by id)
+                    .filter(distintById(News::getId))
+                    // sort the stream by publishedAt
+                    .sorted((k1, k2) -> k2.getPublishedAt().compareTo(k1.getPublishedAt()))
+                    // return the stream to list
+                    .collect(Collectors.toList());
 
 
 
@@ -87,26 +98,42 @@ public class ContractsImplNewsApi implements Contracts {
     }
 
     /**
+     * Filter the Stream.
+     *
+     * @param idExtractor
+     * @param <T>   news to filter
+     * @return true if the news already exist.
+     */
+    private static <T> Predicate<T> distintById(Function<? super T, ?> idExtractor) {
+        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(idExtractor.apply(t), Boolean.TRUE) == null;
+    }
+
+    /**
      * Article to News. (Transformer Pattern).
      * @param article to convert.
      * @return the News.
      */
     private static News article2news(Article article) {
 
+        Validation.notNull(article, "Article null !?!");
+
+        // Fixing the author null :(
+        if(article.getAuthor() == null || article.getAuthor().length() ==  0){
+            article.setAuthor("No Author*");
+        }
+
+        // Fixing more restrictions
+        if(article.getDescription() == null || article.getDescription().length() == 0 ){
+            article.setDescription("No Description*");
+        }
+
+
         // The date
         ZonedDateTime publishedAt = ZonedDateTime
                 .parse(article.getPublishedAt())
                 .withZoneSameInstant(ZoneId.of("-3"));
 
-        // Fixing the restrictions
-        if(article.getAuthor() == null || article.getAuthor().length() <=4){
-            article.setAuthor("No Author*");
-        }
-
-        // Fixing more restrictions
-        if(article.getDescription() == null || article.getDescription().length() <= 9 ){
-            article.setDescription("No Description*");
-        }
 
         return new News(
                 article.getTitle(),
