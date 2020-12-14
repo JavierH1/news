@@ -50,7 +50,7 @@ public class ContractsImplNewsApi implements Contracts {
      */
     public ContractsImplNewsApi(String apiKey) {
 
-        Validation.notNull(apiKey,"ApiKey");
+        Validation.minSize(apiKey, 10, "ApiKey !!");
         this.newsApiService = new NewsApiService(apiKey);
 
     }
@@ -65,34 +65,31 @@ public class ContractsImplNewsApi implements Contracts {
     public List<News> retrieveNews(Integer size) {
 
         try {
-            // Request to NewApi
-            List<Article> articles = this.newsApiService.getTopHeadlines("general", size);
 
-            // The final list of news
-            List<News> news = new ArrayList<>();
+            // Get the list of Article
+            List<Article> articles = newsApiService.getTopHeadlines(
+                    "technology", size
+            );
 
-            // Iterate over the articles
-            for(Article article: articles){
-
-                // Article -> news
-                news.add(article2news(article));
-
+            // The List of Articles to List of News
+            List<News> rawNews = new ArrayList<>();
+            for (Article article : articles) {
+                // log.debug("Article: {}", ToStringBuilder.reflectionToString(article, ToStringStyle.MULTI_LINE_STYLE));
+                rawNews.add(article2news(article));
             }
-            // Return the list of news
-            return news.stream()
-                    //Remove the duplicates (by id)
+
+            // Return the news filtered and sorted by date
+            return rawNews.stream()
+                    // Remove the duplicateds (by keys)
                     .filter(distintById(News::getId))
-                    // sort the stream by publishedAt
+                    // Order by date
                     .sorted((k1, k2) -> k2.getPublishedAt().compareTo(k1.getPublishedAt()))
-                    // return the stream to list
                     .collect(Collectors.toList());
 
 
-
-        } catch (IOException e) {
-            log.error("Error", e);
-            // Inner Exception
-            throw new RuntimeException(e);
+        } catch (IOException ex) {
+            // Encapsulate!
+            throw new RuntimeException(ex);
         }
 
     }
