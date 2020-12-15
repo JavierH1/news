@@ -109,7 +109,7 @@ public final class NewsItem extends ModelAbstractItem<News, NewsItem, NewsItem.V
 
         public ViewHolder(@NonNull View view) {
             super(view);
-            this.tittle = view.findViewById(R.id.in_tv_tittle);
+            this.tittle = view.findViewById(R.id.in_tv_title);
             this.author = view.findViewById(R.id.in_tv_autor);
             this.source = view.findViewById(R.id.in_tv_source);
             this.description = view.findViewById(R.id.in_tv_description);
