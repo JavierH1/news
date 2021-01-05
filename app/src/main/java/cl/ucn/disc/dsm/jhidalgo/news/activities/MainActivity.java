@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,7 @@ import java.util.List;
 
 import cl.ucn.disc.dsm.jhidalgo.news.R;
 import cl.ucn.disc.dsm.jhidalgo.news.model.News;
+import cl.ucn.disc.dsm.jhidalgo.news.services.CheckNetwork;
 import cl.ucn.disc.dsm.jhidalgo.news.services.Contracts;
 import cl.ucn.disc.dsm.jhidalgo.news.services.ContractsImplNewsApi;
 
@@ -60,39 +62,58 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        // The toolbar
-        this.setSupportActionBar(findViewById(R.id.am_t_toolbar));
+        // Returns true if internet available
+        if(CheckNetwork.isInternetAvailable(MainActivity.this))
+        {
 
-        // The FastAdapter
-        ModelAdapter<News, NewsItem> newsAdapter = new ModelAdapter<>(NewsItem::new);
-        FastAdapter<NewsItem> fastAdapter = FastAdapter.with(newsAdapter);
-        fastAdapter.withSelectable(false);
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
 
-        // The Recycler view
-        RecyclerView recyclerView = findViewById(R.id.am_rv_news);
-        recyclerView.setAdapter(fastAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+            // The toolbar
+            this.setSupportActionBar(findViewById(R.id.am_t_toolbar));
 
-        // Get the news in the background thread
-        AsyncTask.execute(() -> {
+            // The FastAdapter
+            ModelAdapter<News, NewsItem> newsAdapter = new ModelAdapter<>(NewsItem::new);
+            FastAdapter<NewsItem> fastAdapter = FastAdapter.with(newsAdapter);
+            fastAdapter.withSelectable(false);
 
-            // Using the contracts to get the news ..
-            Contracts contracts = new ContractsImplNewsApi("6bccb50265334579b044cc5077e600ed");
+            // The Recycler view
+            RecyclerView recyclerView = findViewById(R.id.am_rv_news);
+            recyclerView.setAdapter(fastAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-            // Get the News from NewsApi (internet!)
-            List<News> listNews = contracts.retrieveNews(30);
+            // Get the news in the background thread
+            AsyncTask.execute(() -> {
 
-            // Set the adapter!
-            runOnUiThread(() -> {
-                newsAdapter.add(listNews);
+                // Using the contracts to get the news ..
+                Contracts contracts = new ContractsImplNewsApi("6bccb50265334579b044cc5077e600ed");
+
+                // Get the News from NewsApi (internet!)
+                List<News> listNews = contracts.retrieveNews(30);
+
+                // Set the adapter!
+                runOnUiThread(() -> {
+                    newsAdapter.add(listNews);
+                });
+
             });
+        }
+        // If no internet connection is available
+        else
+        {
 
-        });
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
 
+            // The toolbar
+            this.setSupportActionBar(findViewById(R.id.am_t_toolbar));
+
+            // Display a message of "no internet connection available"
+            Toast.makeText(MainActivity.this,"No Internet Connection",Toast.LENGTH_LONG).show();
+
+        }
 
     }
 
@@ -127,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         // Change the label of the menu based on the state of the app.
         int nightMode = AppCompatDelegate.getDefaultNightMode();
-        if(nightMode == AppCompatDelegate.MODE_NIGHT_YES){
+        if (nightMode == AppCompatDelegate.MODE_NIGHT_YES){
             menu.findItem(R.id.night_mode).setTitle(R.string.day_mode);
         } else{
             menu.findItem(R.id.night_mode).setTitle(R.string.night_mode);
@@ -154,16 +175,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         //Check if the correct item was clicked
-        if(item.getItemId()==R.id.night_mode){}
+        if (item.getItemId() == R.id.night_mode){}
         // TODO: Get the night mode state of the app.
         int nightMode = AppCompatDelegate.getDefaultNightMode();
         //Set the theme mode for the restarted activity
         if (nightMode == AppCompatDelegate.MODE_NIGHT_YES) {
-            AppCompatDelegate.setDefaultNightMode
-                    (AppCompatDelegate.MODE_NIGHT_NO);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         } else {
-            AppCompatDelegate.setDefaultNightMode
-                    (AppCompatDelegate.MODE_NIGHT_YES);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
         recreate();
         return true;
