@@ -15,12 +15,21 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+/**
+ * Class to check if there is internet connection
+ * @author Javier Hidalgo Ochoa.
+ */
 public class CheckNetwork {
 
     private static final String TAG = CheckNetwork.class.getSimpleName();
 
 
-
+    /**
+     * Check the internet connection is available
+     *
+     * @param context to get the active network info
+     * @return a boolean about the state of the internet connection
+     */
     public static boolean isInternetAvailable(Context context)
     {
         NetworkInfo info = (NetworkInfo) ((ConnectivityManager)
