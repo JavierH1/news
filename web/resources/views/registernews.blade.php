@@ -29,7 +29,7 @@
 
     <div class="col-sm-6">
 
-        <p class="h1 text-center"<h1>Registro de noticias</h1>
+        <p class="h1 text-center">Registro de noticias</p>
         <!-- validation, error messages and news entered correctly. -->
         @if($errors -> any())
 
