@@ -18,8 +18,8 @@
         <br>
     </div>
     <meta charset="utf-8">
-    <title>Registrar noticia</title>
-    <meta name="description" content="de registro de noticias">
+    <title>Registrar noticias</title>
+    <meta name="description" content="Registrar noticias">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -29,7 +29,7 @@
 
     <div class="col-sm-6">
 
-        <h1>Registro de noticias</h1>
+        <p class="h1 text-center"<h1>Registro de noticias</h1>
         <!-- validation, error messages and news entered correctly. -->
         @if($errors -> any())
 
@@ -81,6 +81,7 @@
                     <input type="text" class="form-control" name="url" placeholder="Ingrese el URL de la notica"
                            value="{{old('url')}}">
                 </div>
+
             </div>
 
             <div class="form-group">
