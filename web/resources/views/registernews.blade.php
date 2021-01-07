@@ -116,8 +116,8 @@
             date_default_timezone_set('America/Santiago');
             $date_actual = date("d-m-Y");
             ?>
-            <div class="form-group">
-                <label for="date" class="col-sm-4 col-form-label">Fecha de ingreso</label>
+            <div class="col-sm-6">
+                <label for="date" class="col-sm-8 col-form-label">Fecha de ingreso</label>
                 <div>
                     <input type="text" class="form-control" name="date" type="datetime" value="<?= $date_actual?>">
                 </div>
