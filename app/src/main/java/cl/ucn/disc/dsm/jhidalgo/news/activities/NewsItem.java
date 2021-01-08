@@ -73,7 +73,7 @@ public final class NewsItem extends ModelAbstractItem<News, NewsItem, NewsItem.V
         super.bindView(holder, payloads);
 
         // Setting the holder
-        holder.tittle.setText(getModel().getTittle());
+        holder.tittle.setText(getModel().getTitle());
         holder.author.setText(getModel().getAuthor());
         holder.source.setText(getModel().getSource());
         holder.description.setText(getModel().getDescription());
