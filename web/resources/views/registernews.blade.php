@@ -18,8 +18,8 @@
         <br>
     </div>
     <meta charset="utf-8">
-    <title>Registrar noticias</title>
-    <meta name="description" content="Registrar noticias">
+    <title>Register of news</title>
+    <meta name="description" content="register news">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -30,7 +30,7 @@
     <div class="col-sm-6">
 
         <p class="h1 text-center">Registro de noticias</p>
-        <!-- validation, error messages and news entered correctly. -->
+        <!-- validation -->
         @if($errors -> any())
 
             <div class="alert alert-danger">
@@ -72,6 +72,14 @@
                 <div>
                     <input type="text" class="form-control" name="author" placeholder="Ingrese el autor"
                            value="{{old('author')}}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="source" class="col-sm-4 col-form-label">Fuente</label>
+                <div>
+                    <input type="text" class="form-control" name="source" placeholder="Ingrese la fuente"
+                           value="{{old('source')}}">
                 </div>
             </div>
 
