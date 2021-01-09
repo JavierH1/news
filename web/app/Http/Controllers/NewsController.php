@@ -96,7 +96,9 @@ class NewsController extends Controller
      */
     public function show()
     {
-            //
+        //Show the list of news in the database.
+        $data = News::all();
+        return view('viewnews', ['listNews' => $data]);
     }
 
     /**
@@ -117,9 +119,9 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+       //
     }
 
     /**
