@@ -11,6 +11,10 @@
 package cl.ucn.disc.dsm.jhidalgo.news.model;
 
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import net.openhft.hashing.LongHashFunction;
 
 import org.threeten.bp.ZonedDateTime;
@@ -21,56 +25,66 @@ import cl.ucn.disc.dsm.jhidalgo.news.utils.Validation;
  * The domain model: News.
  * @author Javier Hidalgo Ochoa.
  */
+@Entity
 public final class News {
 
     /**
      * Unique id
      */
-    private final Long id;
+    @PrimaryKey (autoGenerate = true)
+    private Long id;
 
     /**
      * The Tittle.
      * Restrictions: not null, size > 2.
      */
+    @ColumnInfo(name = "title")
     private final String title;
 
     /**
      * The source
      * Restrictions: not null, size > 2.
      */
+    @ColumnInfo(name = "source")
     private final String source;
 
     /**
      * The author.
      * Restrictions: not null, size > 2.
      */
+    @ColumnInfo(name = "author")
     private final String author;
 
     /**
      * The URL.
      */
+    @ColumnInfo(name = "url")
     private final String url;
 
     /**
      * The URL of the image.
      */
+    @ColumnInfo(name = "urlImage")
     private final String urlImage;
 
     /**
      * The description.
      */
+    @ColumnInfo(name = "description")
     private final String description;
 
     /**
      * The content.
      * Restrictions: not null.
      */
+    @ColumnInfo(name = "content")
     private final String content;
 
     /**
      * The date of publish.
      * Restrictions: not null.
      */
+    @ColumnInfo(name = "publishedAt")
     private final ZonedDateTime publishedAt;
 
     /**
@@ -123,7 +137,7 @@ public final class News {
     /**
      * @return the tittle.
      */
-    public String getTittle() { return title; }
+    public String getTitle() { return title; }
 
     /**
      * @return the source.
@@ -160,4 +174,7 @@ public final class News {
      */
     public ZonedDateTime getPublishedAt() { return publishedAt; }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
