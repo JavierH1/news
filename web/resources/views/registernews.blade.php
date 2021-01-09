@@ -18,7 +18,7 @@
         <br>
     </div>
     <meta charset="utf-8">
-    <title>Register of news</title>
+    <title>Registro de noticias</title>
     <meta name="description" content="register news">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -59,7 +59,7 @@
             @csrf
 
             <div class="form-group">
-                <label for="Título de la noticia" class="col-sm-4 col-form-label">Título de la noticia</label>
+                <label for="title" class="col-sm-4 col-form-label">Título de la noticia</label>
                 <div>
                     <input type="text" class="form-control" name="title" placeholder="ingrese el titulo de la noticia"
                            value="{{old('title')}}">
@@ -86,7 +86,7 @@
             <div class="form-group">
                 <label for="url" class="col-sm-4 col-form-label">URL de la noticia</label>
                 <div>
-                    <input type="text" class="form-control" name="url" placeholder="Ingrese el URL de la notica"
+                    <input type="text" class="form-control" name="url" placeholder="Ingrese el URL de la noticia"
                            value="{{old('url')}}">
                 </div>
 
@@ -114,7 +114,8 @@
                 <label for="content" class="col-sm-6 col-form-label">Contenido de la noticia</label>
                 <div>
                     <textarea class="form-control" name="content" rows="6" cols="50"
-                              value="{{old('description')}}"></textarea>
+                              placeholder="Ingrese el contenido"
+                              value="{{old('content')}}"></textarea>
                 </div>
                 <small id="inputContent" class="form-text text-muted">Ingrese contenido</small>
 
@@ -138,7 +139,6 @@
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <div class="col-sm-10">
                     <button type="submit" class="btn btn-success">Registrar</button>
-                    <button type="submit" class="btn btn-danger">Cancelar</button>
                 </div>
             </div>
         </form>
