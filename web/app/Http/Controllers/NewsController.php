@@ -109,7 +109,8 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data =  News::find($id);
+        return view('editnews', ['editNews' => $data]);
     }
 
     /**
