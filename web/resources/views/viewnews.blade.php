@@ -60,6 +60,7 @@
                 <td>{{$news['published_at']}}</td>
                 <td>
                     <a href = {{"edit/".$news['id']}}>Editar</a>
+                    <a href = {{"delete/".$news['id']}}>Borrar</a>
                 </td>
 
 
