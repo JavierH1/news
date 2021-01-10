@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ModelAdapter;
@@ -54,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
      * The listView.
      */
     protected ListView listView;
+
+    /**
+     * The swipeRefreshLayout.
+     */
+    protected SwipeRefreshLayout swipeRefreshLayout;
 
     /**
      * onCreate.
