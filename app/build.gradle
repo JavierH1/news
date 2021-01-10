@@ -97,7 +97,10 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
-
+    // SwipeRefreshLayout
+    dependencies {
+        implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    }
 
 
 
