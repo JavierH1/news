@@ -10,14 +10,14 @@
 
 
 ##  Technologies
-- PHP 7.4.7
+- PHP 7.4.13 y PHP 8.0.0
 - Bootstrap 4 
 - Laravel 8
-- PhpStorm 3.1
+- PhpStorm -actualizar versión-
+- Blade
 - Android Studio -agregar version-
-- HTML, CSS, Javascript
+- HTML, CSS
 - Gradle -agregar version-
-- ORMLite 5.1 + JUunit 5.7.0
 - SQLite -agregar version-
 
 ## Developers
