@@ -17,18 +17,28 @@ import androidx.room.Query;
 
 import java.util.List;
 
+
+/**
+ * The NewsDao interface
+ *
+ * @author Javier Hidalgo Ochoa.
+ */
 @Dao
 public interface NewsDao {
 
-    @Query("SELECT * FROM News")
+    // Get all the news ordered by publication date (newest first)
+    @Query("SELECT * FROM News ORDER BY publishedAt DESC")
     List<News> getAll();
 
+    // Insert a News into the database
     @Insert
     long insert(News news);
 
+    // Delete a News from the database
     @Delete
     void delete(News news);
 
+    // Delete all the database
     @Query("DELETE FROM News")
     public void nukeTable();
 
