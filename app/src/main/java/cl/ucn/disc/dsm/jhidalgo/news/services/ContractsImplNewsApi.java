@@ -147,6 +147,7 @@ public class ContractsImplNewsApi implements Contracts {
     /**
      * Save a List of News into the System.
      *
+     * @param db the database.
      * @param listNews to save.
      */
     @Override
