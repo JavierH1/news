@@ -34,6 +34,7 @@ public class ContractsImpl implements Contracts {
 
     /**
      * Get the list of News.
+     *
      * @param size size of the list.
      * @return the list of News.
      */
@@ -61,6 +62,7 @@ public class ContractsImpl implements Contracts {
 
     /**
      * Save a List of News into the System.
+     *
      * @param db the database.
      * @param listNews to save.
      */

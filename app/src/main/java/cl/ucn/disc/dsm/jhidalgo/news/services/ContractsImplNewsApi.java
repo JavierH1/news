@@ -107,6 +107,7 @@ public class ContractsImplNewsApi implements Contracts {
 
     /**
      * Article to News. (Transformer Pattern).
+     *
      * @param article to convert.
      * @return the News.
      */

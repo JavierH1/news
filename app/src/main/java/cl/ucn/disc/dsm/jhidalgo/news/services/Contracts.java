@@ -22,6 +22,7 @@ public interface Contracts {
 
     /**
      * Get the list of News.
+     *
      * @param size size of the list.
      * @return the list of News.
      */
@@ -29,6 +30,7 @@ public interface Contracts {
 
     /**
      * Save a List of News into the System.
+     *
      * @param database the database
      * @param listNews to save.
      */

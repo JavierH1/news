@@ -39,7 +39,7 @@ public final class ContractsImplFaker implements Contracts {
     private final List<News> theNews = new ArrayList<>();
 
     /**
-     * The contructor: Generate 5 {@link News}
+     * The constructor: Generate 5 {@link News}
      */
     public ContractsImplFaker(){
 
@@ -63,6 +63,7 @@ public final class ContractsImplFaker implements Contracts {
 
     /**
      * Get the list of News.
+     *
      * @param size size of the list.
      * @return the list of News.
      */
@@ -75,6 +76,7 @@ public final class ContractsImplFaker implements Contracts {
 
     /**
      * Save one News into the System.
+     *
      * @param db the database.
      * @param listNews to save.
      */
