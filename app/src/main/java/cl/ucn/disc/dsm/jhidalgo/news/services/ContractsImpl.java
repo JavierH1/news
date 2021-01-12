@@ -60,10 +60,11 @@ public class ContractsImpl implements Contracts {
     }
 
     /**
-     *
-     * @param news to save.
+     * Save a List of News into the System.
+     * @param db the database.
+     * @param listNews to save.
      */
-    public void saveNews(News news) {
+    public void saveNews(AppDatabase db, List<News> listNews) {
 
 
     }
