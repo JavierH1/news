@@ -10,11 +10,14 @@
 
 package cl.ucn.disc.dsm.jhidalgo.news.activities;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -66,6 +69,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // The switch
+        Switch switchButton = findViewById(R.id.switch_1);
+
+        if (switchButton != null) {
+            switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+
+                    openActivity2();
+
+
+                }
+            });
+        }
+
         // Database instance
         AppDatabase db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "newsDB").enableMultiInstanceInvalidation().build();
@@ -75,13 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Returns true if internet available
         if(CheckNetwork.isInternetAvailable(MainActivity.this)) {
-
-            // Delete the stored news when accessing the internet
-            Thread t = new Thread(() -> AppDatabase.getInstance(getApplicationContext()).newsDao().nukeTable());
-            t.start();
-
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
 
             // The toolbar
             this.setSupportActionBar(findViewById(R.id.am_t_toolbar));
@@ -103,6 +118,10 @@ public class MainActivity extends AppCompatActivity {
                 // Get the News from NewsApi (internet!)
                 List<News> listNews = contracts.retrieveNews(30);
 
+                // Delete the stored news when accessing the internet
+                Thread t = new Thread(() -> AppDatabase.getInstance(getApplicationContext()).newsDao().nukeTable());
+                t.start();
+
                 // Save the news in the local database
                 contracts.saveNews(db,listNews);
 
@@ -112,14 +131,13 @@ public class MainActivity extends AppCompatActivity {
                 });
             });
 
+
+
         }
         // If no internet connection is available
         else {
 
             Toolbar toolbar;
-
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
 
             // The toolbar
             this.setSupportActionBar(findViewById(R.id.am_t_toolbar));
@@ -157,8 +175,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
+    /**
+     * Open the activity2 when clicking the switch
+     */
+    public void openActivity2 (){
+        Intent intent = new Intent(this, Activity2.class);
+        startActivity(intent);
+    }
 
     /**
      * Initialize the contents of the Activity's standard options menu.  You
