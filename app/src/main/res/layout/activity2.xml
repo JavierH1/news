@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.MainActivity">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Switch
+                android:id="@+id/switch_2"
+                style="@style/Theme.News.toolBar"
+                android:layout_width="59dp"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/am_t_toolbar"
+                style="@style/Theme.News.toolBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="4dp"
+                android:minHeight="?attr/actionBarSize"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp"
+
+
+                app:navigationIcon="@drawable/ic_launcher_foreground" />
+
+        </LinearLayout>
+
+
+        <!--app:subtitle="@string/subtitle"
+            app:title="@string/title"--> @FIX ME "Title and subtitle"
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <!--
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/am_swl_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    -->
+
+    <EditText
+        android:id="@+id/editTextTextPersonName2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:singleLine="false"
+        android:text="Noticias Laravel"
+        android:visibility="visible"
+        tools:text="Noticias Laravel"
+        tools:visibility="visible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/am_rv_news"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <!--
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    -->
+
+
+
+</LinearLayout>
