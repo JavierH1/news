@@ -36,33 +36,24 @@
 
             style="@style/Theme.News.toolBar"/>
 
-
-
-
-
-
-
         <!--app:subtitle="@string/subtitle"
             app:title="@string/title"--> @FIX ME "Title and subtitle"
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <!--
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/am_swl_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    -->
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/am_rv_news"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical" />
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <!--
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    -->
-
 
 
 </LinearLayout>
