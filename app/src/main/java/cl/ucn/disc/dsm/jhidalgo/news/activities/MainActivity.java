@@ -13,11 +13,9 @@ package cl.ucn.disc.dsm.jhidalgo.news.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
-import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -60,19 +58,9 @@ public class MainActivity extends AppCompatActivity {
     private static final Logger log = LoggerFactory.getLogger(MainActivity.class);
 
     /**
-     * The listView.
-     */
-    protected ListView listView;
-
-    /**
      * The recycleView.
      */
     protected RecyclerView recyclerView;
-
-    /**
-     * The recycleAdapter.
-     */
-    protected ContractsImpl recyclerAdapter;
 
     /**
      * The swipeRefreshLayout.
@@ -98,9 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-
                     openActivity2();
-
 
                 }
             });
@@ -153,17 +139,23 @@ public class MainActivity extends AppCompatActivity {
                 swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
                     @Override
                     public void onRefresh(){
-                        recyclerAdapter.setItems(listNews);
-                        recyclerAdapter.notify();
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                swipeRefreshLayout.setRefreshing(false);
-                            }
-                        },3*1000);
+
+                        AsyncTask.execute(()->{
+
+                            Contracts contracts = new ContractsImplNewsApi("6bccb50265334579b044cc5077e600ed");
+
+                            List<News> listNews = contracts.retrieveNews(30);
+
+                            runOnUiThread(() -> {
+                                newsAdapter.clear();
+                                newsAdapter.add(listNews);
+                            });
+                        });
+
+                        fastAdapter.notifyAdapterDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
-
             });
 
 
