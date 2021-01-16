@@ -12,6 +12,7 @@ package cl.ucn.disc.dsm.jhidalgo.news.activities;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -37,6 +38,7 @@ import cl.ucn.disc.dsm.jhidalgo.news.R;
 import cl.ucn.disc.dsm.jhidalgo.news.model.News;
 import cl.ucn.disc.dsm.jhidalgo.news.services.CheckNetwork;
 import cl.ucn.disc.dsm.jhidalgo.news.services.Contracts;
+import cl.ucn.disc.dsm.jhidalgo.news.services.ContractsImpl;
 import cl.ucn.disc.dsm.jhidalgo.news.services.ContractsImplNewsApi;
 
 /**
@@ -55,6 +57,16 @@ public class MainActivity extends AppCompatActivity {
      * The listView.
      */
     protected ListView listView;
+
+    /**
+     * The recycleView.
+     */
+    protected RecyclerView recyclerView;
+
+    /**
+     * The recycleAdapter.
+     */
+    protected ContractsImpl recyclerAdapter;
 
     /**
      * The swipeRefreshLayout.
@@ -104,12 +116,28 @@ public class MainActivity extends AppCompatActivity {
                     newsAdapter.add(listNews);
                 });
 
+                // The Swipe refresh layout
+                swipeRefreshLayout = findViewById(R.id.am_swl_refresh);
+                swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+                    @Override
+                    public void onRefresh(){
+                        recyclerAdapter.setItems(listNews);
+                        recyclerAdapter.notify();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+                        },3*1000);
+                    }
+                });
+
             });
+
         }
         // If no internet connection is available
         else
         {
-
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
