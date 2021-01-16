@@ -136,18 +136,28 @@ public class MainActivity extends AppCompatActivity {
 
                 // The Swipe refresh layout
                 swipeRefreshLayout = findViewById(R.id.am_swl_refresh);
+
+                // Setup refresh listener
                 swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
                     @Override
                     public void onRefresh(){
 
+                        // Get the news from the background thread
                         AsyncTask.execute(()->{
 
+                            // Using contracts to get the news
                             Contracts contracts = new ContractsImplNewsApi("6bccb50265334579b044cc5077e600ed");
 
+                            // Get the news from internet
                             List<News> listNews = contracts.retrieveNews(30);
 
+                            // Set the adapter
                             runOnUiThread(() -> {
+
+                                // Clear the items
                                 newsAdapter.clear();
+
+                                // Add the news items
                                 newsAdapter.add(listNews);
                             });
                         });
@@ -157,9 +167,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             });
-
-
-
 
         }
         // If no internet connection is available
