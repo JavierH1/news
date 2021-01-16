@@ -22,16 +22,19 @@ public interface Contracts {
 
     /**
      * Get the list of News.
+     *
      * @param size size of the list.
      * @return the list of News.
      */
     List<News> retrieveNews(Integer size);
 
     /**
-     * Save one News into the System.
-     * @param news to save.
+     * Save a List of News into the System.
+     *
+     * @param database the database
+     * @param listNews to save.
      */
-    void saveNews(News news);
+    void saveNews(AppDatabase database, List<News> listNews);
 
 
 }

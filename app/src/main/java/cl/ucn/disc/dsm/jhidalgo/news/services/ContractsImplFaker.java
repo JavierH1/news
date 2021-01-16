@@ -39,7 +39,7 @@ public final class ContractsImplFaker implements Contracts {
     private final List<News> theNews = new ArrayList<>();
 
     /**
-     * The contructor: Generate 5 {@link News}
+     * The constructor: Generate 5 {@link News}
      */
     public ContractsImplFaker(){
 
@@ -63,6 +63,7 @@ public final class ContractsImplFaker implements Contracts {
 
     /**
      * Get the list of News.
+     *
      * @param size size of the list.
      * @return the list of News.
      */
@@ -75,11 +76,13 @@ public final class ContractsImplFaker implements Contracts {
 
     /**
      * Save one News into the System.
-     * @param news to save.
+     *
+     * @param db the database.
+     * @param listNews to save.
      */
     @Override
-    public void saveNews(News news) {
-
+    public void saveNews(AppDatabase db, List<News> listNews) {
+        /*
         //If the new is null
         if(news == null){
             System.out.println("The new is null");
@@ -98,7 +101,7 @@ public final class ContractsImplFaker implements Contracts {
 
         System.out.println("Current size: "+theNews.size());
         this.theNews.add(news);
-        System.out.println("Current size: "+theNews.size());
+        System.out.println("Current size: "+theNews.size());*/
 
     }
 }

@@ -10,20 +10,25 @@
 
 package cl.ucn.disc.dsm.jhidalgo.news.activities;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.mikepenz.fastadapter.FastAdapter;
@@ -36,6 +41,7 @@ import java.util.List;
 
 import cl.ucn.disc.dsm.jhidalgo.news.R;
 import cl.ucn.disc.dsm.jhidalgo.news.model.News;
+import cl.ucn.disc.dsm.jhidalgo.news.services.AppDatabase;
 import cl.ucn.disc.dsm.jhidalgo.news.services.CheckNetwork;
 import cl.ucn.disc.dsm.jhidalgo.news.services.Contracts;
 import cl.ucn.disc.dsm.jhidalgo.news.services.ContractsImpl;
@@ -81,12 +87,34 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        // Returns true if internet available
-        if(CheckNetwork.isInternetAvailable(MainActivity.this))
-        {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+        // The switch
+        Switch switchButton = findViewById(R.id.switch_1);
+
+        if (switchButton != null) {
+            switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+
+                    openActivity2();
+
+
+                }
+            });
+        }
+
+        // Database instance
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "newsDB").enableMultiInstanceInvalidation().build();
+
+        // Using the contracts to get the news ..
+        Contracts contracts = new ContractsImplNewsApi("6bccb50265334579b044cc5077e600ed");
+
+        // Returns true if internet available
+        if(CheckNetwork.isInternetAvailable(MainActivity.this)) {
 
             // The toolbar
             this.setSupportActionBar(findViewById(R.id.am_t_toolbar));
@@ -105,11 +133,15 @@ public class MainActivity extends AppCompatActivity {
             // Get the news in the background thread
             AsyncTask.execute(() -> {
 
-                // Using the contracts to get the news ..
-                Contracts contracts = new ContractsImplNewsApi("6bccb50265334579b044cc5077e600ed");
-
                 // Get the News from NewsApi (internet!)
                 List<News> listNews = contracts.retrieveNews(30);
+
+                // Delete the stored news when accessing the internet
+                Thread t = new Thread(() -> AppDatabase.getInstance(getApplicationContext()).newsDao().nukeTable());
+                t.start();
+
+                // Save the news in the local database
+                contracts.saveNews(db,listNews);
 
                 // Set the adapter!
                 runOnUiThread(() -> {
@@ -134,21 +166,57 @@ public class MainActivity extends AppCompatActivity {
 
             });
 
+
+
+
         }
         // If no internet connection is available
-        else
-        {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+        else {
+
+            Toolbar toolbar;
 
             // The toolbar
             this.setSupportActionBar(findViewById(R.id.am_t_toolbar));
 
+            // Change the title of the toolbar
+            toolbar = (Toolbar) findViewById(R.id.am_t_toolbar);
+            toolbar.setTitle("News (No Internet)");
+            this.setSupportActionBar(toolbar);
+
+            // The FastAdapter
+            ModelAdapter<News, NewsItem> newsAdapter = new ModelAdapter<>(NewsItem::new);
+            FastAdapter<NewsItem> fastAdapter = FastAdapter.with(newsAdapter);
+            fastAdapter.withSelectable(false);
+
+            // The Recycler view
+            RecyclerView recyclerView = findViewById(R.id.am_rv_news);
+            recyclerView.setAdapter(fastAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
             // Display a message of "no internet connection available"
             Toast.makeText(MainActivity.this,"No Internet Connection",Toast.LENGTH_LONG).show();
 
+            AsyncTask.execute(() -> {
+
+                // Get the News from the Room Database (with NO internet!)
+                List<News> listNews = db.newsDao().getAll();
+
+                // Set the adapter!
+                runOnUiThread(() -> {
+                    newsAdapter.add(listNews);
+                });
+            });
         }
 
+    }
+
+    /**
+     * Open the activity2 when clicking the switch
+     */
+    public void openActivity2 (){
+        Intent intent = new Intent(this, Activity2.class);
+        startActivity(intent);
     }
 
     /**

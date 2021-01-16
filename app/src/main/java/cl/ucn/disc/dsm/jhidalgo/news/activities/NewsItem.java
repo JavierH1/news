@@ -73,7 +73,7 @@ public final class NewsItem extends ModelAbstractItem<News, NewsItem, NewsItem.V
         super.bindView(holder, payloads);
 
         // Setting the holder
-        holder.tittle.setText(getModel().getTitle());
+        holder.title.setText(getModel().getTitle());
         holder.author.setText(getModel().getAuthor());
         holder.source.setText(getModel().getSource());
         holder.description.setText(getModel().getDescription());
@@ -89,7 +89,7 @@ public final class NewsItem extends ModelAbstractItem<News, NewsItem, NewsItem.V
     public void unbindView(@NonNull ViewHolder holder) {
         super.unbindView(holder);
 
-        holder.tittle.setText("null");
+        holder.title.setText("null");
         holder.author.setText("null");
         holder.source.setText("null");
         holder.description.setText("null");
@@ -101,7 +101,7 @@ public final class NewsItem extends ModelAbstractItem<News, NewsItem, NewsItem.V
      */
     protected static class ViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextView tittle;
+        protected TextView title;
         protected TextView author;
         protected TextView source;
         protected TextView description;
@@ -109,7 +109,7 @@ public final class NewsItem extends ModelAbstractItem<News, NewsItem, NewsItem.V
 
         public ViewHolder(@NonNull View view) {
             super(view);
-            this.tittle = view.findViewById(R.id.in_tv_title);
+            this.title = view.findViewById(R.id.in_tv_title);
             this.author = view.findViewById(R.id.in_tv_autor);
             this.source = view.findViewById(R.id.in_tv_source);
             this.description = view.findViewById(R.id.in_tv_description);

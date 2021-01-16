@@ -12,7 +12,6 @@ package cl.ucn.disc.dsm.jhidalgo.news.services;
 
 import com.kwabenaberko.newsapilib.models.Article;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.threeten.bp.ZoneId;
@@ -108,6 +107,7 @@ public class ContractsImplNewsApi implements Contracts {
 
     /**
      * Article to News. (Transformer Pattern).
+     *
      * @param article to convert.
      * @return the News.
      */
@@ -146,13 +146,17 @@ public class ContractsImplNewsApi implements Contracts {
     }
 
     /**
-     * Save one News into the System.
+     * Save a List of News into the System.
      *
-     * @param news to save.
+     * @param db the database.
+     * @param listNews to save.
      */
     @Override
-    public void saveNews(News news) {
-        throw new NotImplementedException("Can't save news in NewsAPI");
+    public void saveNews(AppDatabase db, List<News> listNews) {
+
+        for (int i=0;i<listNews.size();i++) {
+            db.newsDao().insert(listNews.get(i));
+        }
 
     }
 }
