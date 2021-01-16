@@ -97,7 +97,7 @@ class NewsController extends Controller
     public function show()
     {
         //Show the list of news in the database.
-        $data = News::all();
+        $data = News::paginate(3);
         return view('viewnews', ['listNews' => $data]);
     }
 
