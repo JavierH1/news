@@ -18,7 +18,7 @@
         <br>
     </div>
     <meta charset="utf-8">
-    <title>Despliegue de noticias</title>
+    <title>View of news</title>
     <meta name="description" content="views news">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -59,14 +59,21 @@
                 <td>{{$news['content']}}</td>
                 <td>{{$news['published_at']}}</td>
                 <td>
-                    <a href = {{"edit/".$news['id']}}>Editar</a>
-                    <a href = {{"delete/".$news['id']}}>Borrar</a>
+                <a href = "{{"edit/".$news['id']}}" class="btn btn-success btn-sm active" role=" button"
+                aria-pressed="=true">Editar</a>
+                <a href = "{{"delete/".$news['id']}}" class="btn btn-danger btn-sm active"
+                   onclick="return confirm('¿Desea borrar esta noticia seleccionada?')"
+                   role=" button"
+                   aria-pressed="=true">Borrar</a>
                 </td>
-
-
             </tr>
         @endforeach
     </table>
+    <div class="text-xs-center">
+        <ul class="pagination justify-content-center">
+            {{$listNews->onEachSide(5)->links()}}
+        </ul>
+    </div>
 
 </div>
 
