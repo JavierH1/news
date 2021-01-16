@@ -37,22 +37,7 @@
             app:contentInsetStart="0dp"
             app:contentInsetStartWithNavigation="0dp"
             app:navigationIcon="@drawable/ic_launcher_foreground"
-
-
             style="@style/Theme.News.toolBar"/>
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/am_t_toolbar"
-                style="@style/Theme.News.toolBar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:elevation="4dp"
-                android:minHeight="?attr/actionBarSize"
-                app:contentInsetStart="0dp"
-                app:contentInsetStartWithNavigation="0dp"
-
-
-                app:navigationIcon="@drawable/ic_launcher_foreground" />
 
         </LinearLayout>
 
@@ -73,7 +58,9 @@
             android:layout_height="match_parent"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-    -->
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <EditText
         android:id="@+id/editTextTextPersonName2"
@@ -86,17 +73,6 @@
         android:visibility="visible"
         tools:text="Noticias API"
         tools:visibility="visible" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/am_rv_news"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical" >
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    -->
 
 
 
