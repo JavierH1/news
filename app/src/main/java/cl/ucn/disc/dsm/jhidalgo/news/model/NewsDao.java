@@ -13,6 +13,7 @@ package cl.ucn.disc.dsm.jhidalgo.news.model;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public interface NewsDao {
     List<News> getAll();
 
     // Insert a News into the database
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     long insert(News news);
 
     // Delete a News from the database

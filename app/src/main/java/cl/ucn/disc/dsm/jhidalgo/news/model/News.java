@@ -31,7 +31,7 @@ public final class News {
     /**
      * Unique id
      */
-    @PrimaryKey (autoGenerate = true)
+    @PrimaryKey (autoGenerate = false)
     private Long id;
 
     /**

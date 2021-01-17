@@ -15,7 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.CompoundButton;
+import android.view.View;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -42,7 +42,6 @@ import cl.ucn.disc.dsm.jhidalgo.news.model.News;
 import cl.ucn.disc.dsm.jhidalgo.news.services.AppDatabase;
 import cl.ucn.disc.dsm.jhidalgo.news.services.CheckNetwork;
 import cl.ucn.disc.dsm.jhidalgo.news.services.Contracts;
-import cl.ucn.disc.dsm.jhidalgo.news.services.ContractsImpl;
 import cl.ucn.disc.dsm.jhidalgo.news.services.ContractsImplNewsApi;
 
 /**
@@ -81,16 +80,27 @@ public class MainActivity extends AppCompatActivity {
         // The switch
         Switch switchButton = findViewById(R.id.switch_1);
 
-        if (switchButton != null) {
-            switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity2();
+            }
+        });
 
-                    openActivity2();
 
-                }
-            });
-        }
+        // The Swipe refresh layout
+        swipeRefreshLayout = findViewById(R.id.am_swl_refresh);
+
+
+        // Setup refresh listener
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+            @Override
+            public void onRefresh(){
+                recreate();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
 
         // Database instance
         AppDatabase db = Room.databaseBuilder(getApplicationContext(),
@@ -99,8 +109,14 @@ public class MainActivity extends AppCompatActivity {
         // Using the contracts to get the news ..
         Contracts contracts = new ContractsImplNewsApi("6bccb50265334579b044cc5077e600ed");
 
+
+
         // Returns true if internet available
         if(CheckNetwork.isInternetAvailable(MainActivity.this)) {
+
+            // Delete the stored news when accessing the internet
+            Thread t = new Thread(() -> AppDatabase.getInstance(getApplicationContext()).newsDao().nukeTable());
+            t.start();
 
             // The toolbar
             this.setSupportActionBar(findViewById(R.id.am_t_toolbar));
@@ -122,50 +138,15 @@ public class MainActivity extends AppCompatActivity {
                 // Get the News from NewsApi (internet!)
                 List<News> listNews = contracts.retrieveNews(30);
 
-                // Delete the stored news when accessing the internet
-                Thread t = new Thread(() -> AppDatabase.getInstance(getApplicationContext()).newsDao().nukeTable());
-                t.start();
-
-                // Save the news in the local database
                 contracts.saveNews(db,listNews);
+
 
                 // Set the adapter!
                 runOnUiThread(() -> {
                     newsAdapter.add(listNews);
+
                 });
 
-                // The Swipe refresh layout
-                swipeRefreshLayout = findViewById(R.id.am_swl_refresh);
-
-                // Setup refresh listener
-                swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
-                    @Override
-                    public void onRefresh(){
-
-                        // Get the news from the background thread
-                        AsyncTask.execute(()->{
-
-                            // Using contracts to get the news
-                            Contracts contracts = new ContractsImplNewsApi("6bccb50265334579b044cc5077e600ed");
-
-                            // Get the news from internet
-                            List<News> listNews = contracts.retrieveNews(30);
-
-                            // Set the adapter
-                            runOnUiThread(() -> {
-
-                                // Clear the items
-                                newsAdapter.clear();
-
-                                // Add the news items
-                                newsAdapter.add(listNews);
-                            });
-                        });
-
-                        fastAdapter.notifyAdapterDataSetChanged();
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                });
             });
 
         }
@@ -205,7 +186,9 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     newsAdapter.add(listNews);
                 });
+
             });
+
         }
 
     }

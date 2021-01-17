@@ -62,19 +62,6 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <EditText
-        android:id="@+id/editTextTextPersonName2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:singleLine="false"
-        android:text="Noticias API"
-        android:visibility="visible"
-        tools:text="Noticias API"
-        tools:visibility="visible" />
-
-
 
 </LinearLayout>
 
