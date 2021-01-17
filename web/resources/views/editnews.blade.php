@@ -18,7 +18,7 @@
         <br>
     </div>
     <meta charset="utf-8">
-    <title>Editar Noticias</title>
+    <title> Edit news </title>
     <meta name="description" content="register news">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -29,7 +29,7 @@
 
     <div class="col-sm-6">
 
-        <p class="h1 text-center">Editar noticias</p>
+        <p class="h1 text-center">Edit News</p>
 
     <!-- form start -->
         <form action="/edit" method="POST">
@@ -37,7 +37,7 @@
     @csrf
     <input type="hidden" name="id" value = "{{$editNews['id']}}"> <br> <br>
             <div class="form-group">
-                <label for="Título title" class="col-sm-4 col-form-label">Título de la noticia</label>
+                <label for="title" class="col-sm-4 col-form-label">Título de la noticia</label>
                 <div> <input type="text" class="form-control" name="title" value = "{{$editNews['title']}}"> </div>
             </div>
 
