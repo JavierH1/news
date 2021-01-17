@@ -18,7 +18,7 @@
         <br>
     </div>
     <meta charset="utf-8">
-    <title>Registro de noticias</title>
+    <title>Register News</title>
     <meta name="description" content="register news">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
