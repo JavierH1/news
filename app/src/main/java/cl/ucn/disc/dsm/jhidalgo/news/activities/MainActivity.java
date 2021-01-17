@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
-import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -28,6 +27,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ModelAdapter;
@@ -42,6 +42,7 @@ import cl.ucn.disc.dsm.jhidalgo.news.model.News;
 import cl.ucn.disc.dsm.jhidalgo.news.services.AppDatabase;
 import cl.ucn.disc.dsm.jhidalgo.news.services.CheckNetwork;
 import cl.ucn.disc.dsm.jhidalgo.news.services.Contracts;
+import cl.ucn.disc.dsm.jhidalgo.news.services.ContractsImpl;
 import cl.ucn.disc.dsm.jhidalgo.news.services.ContractsImplNewsApi;
 
 /**
@@ -57,9 +58,14 @@ public class MainActivity extends AppCompatActivity {
     private static final Logger log = LoggerFactory.getLogger(MainActivity.class);
 
     /**
-     * The listView.
+     * The recycleView.
      */
-    protected ListView listView;
+    protected RecyclerView recyclerView;
+
+    /**
+     * The swipeRefreshLayout.
+     */
+    protected SwipeRefreshLayout swipeRefreshLayout;
 
     /**
      * onCreate.
@@ -80,9 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-
                     openActivity2();
-
 
                 }
             });
@@ -129,9 +133,40 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     newsAdapter.add(listNews);
                 });
+
+                // The Swipe refresh layout
+                swipeRefreshLayout = findViewById(R.id.am_swl_refresh);
+
+                // Setup refresh listener
+                swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+                    @Override
+                    public void onRefresh(){
+
+                        // Get the news from the background thread
+                        AsyncTask.execute(()->{
+
+                            // Using contracts to get the news
+                            Contracts contracts = new ContractsImplNewsApi("6bccb50265334579b044cc5077e600ed");
+
+                            // Get the news from internet
+                            List<News> listNews = contracts.retrieveNews(30);
+
+                            // Set the adapter
+                            runOnUiThread(() -> {
+
+                                // Clear the items
+                                newsAdapter.clear();
+
+                                // Add the news items
+                                newsAdapter.add(listNews);
+                            });
+                        });
+
+                        fastAdapter.notifyAdapterDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
             });
-
-
 
         }
         // If no internet connection is available
