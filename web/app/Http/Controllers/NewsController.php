@@ -19,11 +19,11 @@ class NewsController extends Controller
         $news = News::all();
 
         // Return the GET request with code 200
-        return response([
-            'message' => 'Retrieved Successfully',
-            'news' => $news
-        ], 200);
+        return response(
+            $news
+        , 200);
     }
+
 
     /**
      * Show the form for creating a new resource.
