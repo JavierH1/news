@@ -99,7 +99,7 @@
         <!-- Copyright -->
         <div class="text-center p-4" style="background-color: #e3f2fd;">
         © 2021 Copyright:
-        <a class="text-dark" href="https://mdbootstrap.com/">UCN -Desarrollo de Soluciones moviles</a>
+        <a class="text-dark" href="https://mdbootstrap.com/">UCN - Desarrollo de Soluciones moviles</a>
     </div>
     </div>
 
