@@ -18,11 +18,9 @@ class NewsController extends Controller
          //SELECT * FROM News
         $news = News::all();
 
-        // Return the GET request with code 200
-        return response([
-            'message' => 'Retrieved Successfully',
-            'news' => $news
-        ], 200);
+        // Return the GET request with code 200, with pagination
+        $newsList= News::paginate();
+        return response() ->json( $newsList,200);
     }
 
     /**
