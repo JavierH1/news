@@ -21,3 +21,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 // News Routes
 Route::resource('news', NewsController::class);
+
+//Route of the news controller to search in api by title
+Route::get('searchtitle/{title}', [NewsController::class, 'searchtitle']);
+
+//Route of the news controller to search in api by title
+Route::get('searchcontent/{content}', [NewsController::class, 'searchcontent']);
+
