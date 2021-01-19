@@ -18,8 +18,11 @@ class NewsController extends Controller
          //SELECT * FROM News
         $news = News::all();
 
-        // Return the GET request with code 200, with pagination
-        $newsList= News::paginate();
+        // Return the GET request with code 200, with pagination.
+        //http://127.0.0.1:8000/api/news?page=n <-------  Example of url for the search page
+        //with "n" = page.
+
+        $newsList= News::paginate(2);
         return response() ->json( $newsList,200);
     }
 
