@@ -10,12 +10,14 @@
 
 package cl.ucn.disc.dsm.jhidalgo.news.activities;
 
+import android.net.Uri;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.mikepenz.fastadapter.items.ModelAbstractItem;
 
 import org.threeten.bp.format.DateTimeFormatter;
@@ -78,6 +80,8 @@ public final class NewsItem extends ModelAbstractItem<News, NewsItem, NewsItem.V
         holder.source.setText(getModel().getSource());
         holder.description.setText(getModel().getDescription());
         holder.publishedAt.setText(FORMATTER.format(getModel().getPublishedAt()));
+        holder.SimpleDraweeView.setImageURI(getModel().getUrlImage());
+
     }
 
     /**
@@ -94,6 +98,8 @@ public final class NewsItem extends ModelAbstractItem<News, NewsItem, NewsItem.V
         holder.source.setText("null");
         holder.description.setText("null");
         holder.publishedAt.setText("null");
+        holder.SimpleDraweeView.setImageURI("null");
+
     }
 
     /**
@@ -106,6 +112,7 @@ public final class NewsItem extends ModelAbstractItem<News, NewsItem, NewsItem.V
         protected TextView source;
         protected TextView description;
         protected TextView publishedAt;
+        protected SimpleDraweeView SimpleDraweeView;
 
         public ViewHolder(@NonNull View view) {
             super(view);
@@ -114,12 +121,16 @@ public final class NewsItem extends ModelAbstractItem<News, NewsItem, NewsItem.V
             this.source = view.findViewById(R.id.in_tv_source);
             this.description = view.findViewById(R.id.in_tv_description);
             this.publishedAt = view.findViewById(R.id.in_tv_published_at);
+            this.SimpleDraweeView = view.findViewById(R.id.my_image_view);
+
+            // Using fresco to load the images
+            Uri uri = Uri.parse(SimpleDraweeView.toString());
+            SimpleDraweeView draweeView = (SimpleDraweeView) view.findViewById(R.id.my_image_view);
+            draweeView.setImageURI(uri);
 
         }
 
     }
-
-
 
 }
 

@@ -13,7 +13,6 @@ package cl.ucn.disc.dsm.jhidalgo.news.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,13 +29,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ModelAdapter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cl.ucn.disc.dsm.jhidalgo.news.R;
@@ -45,16 +44,13 @@ import cl.ucn.disc.dsm.jhidalgo.news.services.AppDatabase;
 import cl.ucn.disc.dsm.jhidalgo.news.services.CheckNetwork;
 import cl.ucn.disc.dsm.jhidalgo.news.services.Contracts;
 import cl.ucn.disc.dsm.jhidalgo.news.services.ContractsImplNewsApi;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * The Main Class
  *
  * @autor Javier Hidalgo Ochoa
  */
-public class MainActivity extends AppCompatActivity implements Callback<ArrayList<News>> {
+public class MainActivity extends AppCompatActivity  {
 
     /**
      * The logger.
@@ -81,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements Callback<ArrayLis
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Fresco.initialize(this);
 
         // The switch
         Switch switchButton = findViewById(R.id.switch_1);
@@ -88,13 +85,9 @@ public class MainActivity extends AppCompatActivity implements Callback<ArrayLis
         // The Swipe refresh layout
         swipeRefreshLayout = findViewById(R.id.am_swl_refresh);
 
-        //
-        Call<ArrayList<News>> call = ApiAdapter.getApiService().getNews();
-        call.enqueue(this );
-
         AsyncTask.execute(() -> {
 
-
+            // Switch listener on click
             switchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -102,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements Callback<ArrayLis
                 }
             });
 
-            // Setup refresh listener
+            // Swipe refresh listener
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
                 @Override
                 public void onRefresh(){
@@ -285,37 +278,5 @@ public class MainActivity extends AppCompatActivity implements Callback<ArrayLis
         return true;
     }
 
-    /**
-     * Invoked for a received HTTP response.
-     *
-     * <p>Note: An HTTP response may still indicate an application-level failure such as a 404 or 500.
-     * Call {@link Response#isSuccessful()} to determine if the response indicates success.
-     *
-     * @param call
-     * @param response
-     */
-    @Override
-    public void onResponse(Call<ArrayList<News>> call, Response<ArrayList<News>> response) {
 
-            if(response.isSuccessful()) {
-                ArrayList<News> newsFromApi = response.body();
-                Log.d("ON RESPONSE", "VARIABLE = " + newsFromApi.get(0).getAuthor());
-
-            }
-
-    }
-
-    /**
-     * Invoked when a network exception occurred talking to the server or when an unexpected exception
-     * occurred creating the request or processing the response.
-     *
-     * @param call
-     * @param t
-     */
-    @Override
-    public void onFailure(Call<ArrayList<News>> call, Throwable t) {
-
-        Log.d("ON FAILURE RESPONSE"," MESSAGE = "+ t.getMessage());
-
-    }
 }

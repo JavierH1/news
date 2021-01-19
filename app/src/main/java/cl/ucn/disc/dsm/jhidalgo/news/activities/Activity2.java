@@ -11,7 +11,9 @@
 package cl.ucn.disc.dsm.jhidalgo.news.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,19 +25,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.room.Room;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import java.util.ArrayList;
 
 import cl.ucn.disc.dsm.jhidalgo.news.R;
+import cl.ucn.disc.dsm.jhidalgo.news.model.News;
 import cl.ucn.disc.dsm.jhidalgo.news.services.AppDatabase;
 import cl.ucn.disc.dsm.jhidalgo.news.services.CheckNetwork;
 import cl.ucn.disc.dsm.jhidalgo.news.services.Contracts;
 import cl.ucn.disc.dsm.jhidalgo.news.services.ContractsImplNewsApi;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class Activity2 extends AppCompatActivity {
+public class Activity2 extends AppCompatActivity implements Callback<ArrayList<News>> {
 
     /**
      * The listView.
      */
     protected ListView listView;
+
+    /**
+     * The swipeRefreshLayout.
+     */
+    protected SwipeRefreshLayout swipeRefreshLayout;
 
     /**
      * onCreate.
@@ -52,15 +66,42 @@ public class Activity2 extends AppCompatActivity {
         Switch switchButton = findViewById(R.id.switch_2);
         switchButton.setChecked(true);
 
-        switchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openActivity();
-            }
+        // The Swipe refresh layout
+        swipeRefreshLayout = findViewById(R.id.am_swl_refresh);
+
+        // The call to the laravel api
+        Call<ArrayList<News>> call = ApiAdapter.getApiService().getNews();
+        call.enqueue(this);
+
+        AsyncTask.execute(() -> {
+
+            // Switch listener on click
+            switchButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openActivity();
+                }
+            });
+            // Switch listener on scroll
+            switchButton.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    openActivity();
+                }
+            });
+
+
+            // Swipe refresh listener
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+                @Override
+                public void onRefresh(){
+                    recreate();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+
+
         });
-
-
-
 
         // Database instance
         AppDatabase db2 = Room.databaseBuilder(getApplicationContext(),
@@ -173,4 +214,41 @@ public class Activity2 extends AppCompatActivity {
         recreate();
         return true;
     }
+
+
+
+    /**
+     * Invoked for a received HTTP response.
+     * <p>
+     * Note: An HTTP response may still indicate an application-level failure such as a 404 or 500.
+     * Call {@link Response#isSuccessful()} to determine if the response indicates success.
+     *
+     * @param call
+     * @param response
+     */
+    @Override
+    public void onResponse(Call<ArrayList<News>> call, Response<ArrayList<News>> response) {
+
+        if(response.isSuccessful()){
+            ArrayList<News> newsFromApi = response.body();
+            Log.d("ON RESPONSE", "VARIABLE = " + newsFromApi.get(0).getAuthor());
+
+        }
+
+    }
+
+    /**
+     * Invoked when a network exception occurred talking to the server or when an unexpected
+     * exception occurred creating the request or processing the response.
+     *
+     * @param call
+     * @param t
+     */
+    @Override
+    public void onFailure(Call<ArrayList<News>> call, Throwable t) {
+
+
+    }
+
+
 }
