@@ -104,7 +104,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
-    // fresco
+    // Fresco
     implementation 'com.facebook.fresco:fresco:2.3.0'
 
 
