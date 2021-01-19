@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use http\Env\Response;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +26,10 @@ class NewsController extends Controller
 
         $newsList= News::paginate(2);
         return response() ->json( $newsList,200);
+
+        $title = $request->get('search');
+        $news = News::title($title)->paginate(1);
+        return view('viewnews' ,compact('News'));
     }
 
     /**
@@ -100,6 +106,26 @@ class NewsController extends Controller
         //Show the list of news in the database.
         $data = News::paginate(3);
         return view('viewnews', ['listNews' => $data]);
+    }
+
+    public function searchtitle($title)
+
+    {
+        //Search by title example:
+        //http://127.0.0.1:8000/api/searchtitle/wordtosearch
+    $news = News::where('title','like',"%{$title}%")->get();
+
+    return response()->json(['title' => $news]);
+
+    }
+
+    public function searchcontent($content)
+
+    {
+        //Search by content example:
+        //http://127.0.0.1:8000/api/searchcontent/wordtosearch
+        $news = News::where('content','like',"%{$content}%")->get();
+        return response()->json(['content' => $news]);
     }
 
     /**
