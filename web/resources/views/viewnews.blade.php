@@ -2,19 +2,31 @@
 <!doctype html>
 <html>
 <!-- Image and text navbar-->
-<nav class="navbar navbar-light" style="background-color: #e3f2fd;"><!-- prueba de color-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-    <span class="navbar-brand mb-0 h1">
-            Universidad Católica del Norte
-        </span>
+        <a class="navbar-brand" href="#">Laravel News</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/registernews">Registro de noticias</a>
+                </li>
+            </ul>
+            <!-- <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>-->
+        </div>
     </div>
 </nav>
-
 <br/>
 
 <head>
-    <div class="container">
-        <!-- Content here -->
+
+   <div class="container">
+       <!-- Content here -->
         <br>
     </div>
     <meta charset="utf-8">
@@ -30,20 +42,21 @@
     <div class="col-sm-6">
 
         <p class="h1 text-center">Listado de noticias</p>
+
     </div>
 
-    <table border ="1">
+    <table class ="table-light table-bordered">
         <tr>
             <td>id</td>
-            <td>Title</td>
-            <td>Author</td>
-            <td>Source</td>
+            <td>Título</td>
+            <td>Autor</td>
+            <td>Fuente</td>
             <td>URL</td>
-            <td>image URL</td>
-            <td>Description</td>
-            <td>Content</td>
-            <td>Published_At</td>
-            <td>Operation</td>
+            <td>Imagen</td>
+            <td>Descripcion</td>
+            <td>Contenido</td>
+            <td>Fecha</td>
+            <td>Operación</td>
 
         </tr>
         @foreach($listNews as $news)
@@ -59,7 +72,9 @@
                 <td>{{$news['content']}}</td>
                 <td>{{$news['published_at']}}</td>
                 <td>
-                <a href = "{{"edit/".$news['id']}}" class="btn btn-success btn-sm active" role=" button"
+
+
+                <a href = "{{"edit/".$news['id']}}" class="btn btn-primary btn-sm active" role=" button"
                 aria-pressed="=true">Editar</a>
                 <a href = "{{"delete/".$news['id']}}" class="btn btn-danger btn-sm active"
                    onclick="return confirm('¿Desea borrar esta noticia seleccionada?')"
@@ -97,7 +112,7 @@
         <!-- Grid container -->
 
         <!-- Copyright -->
-        <div class="text-center p-4" style="background-color: #e3f2fd;">
+        <div class="text-center p-4" style="background-color: #FAFAFA;">
         © 2021 Copyright:
         <a class="text-dark" href="https://mdbootstrap.com/">UCN - Desarrollo de Soluciones moviles</a>
     </div>
