@@ -7,6 +7,8 @@ use http\Env\Response;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Resources\Json;
+
 
 class NewsController extends Controller
 {
@@ -24,11 +26,10 @@ class NewsController extends Controller
         //http://127.0.0.1:8000/api/news?page=n <-------  Example of url for the search page
         //with "n" = page.
 
-        $newsList= News::paginate(2);
-        return response() ->json( $newsList,200);
+        return response()->json( $news,200);
 
         $title = $request->get('search');
-        $news = News::title($title)->paginate(1);
+        $news = News::title($title)->paginate(2);
         return view('viewnews' ,compact('News'));
     }
 
