@@ -1,0 +1,248 @@
+@startuml
+package "cl.ucn.disc.dsm.news" {
+
+    package "model" #F4B0A6{
+
+        Class News <<Entity>>{
+
+            - id: Long
+            - title: String
+            - source: String
+            - author: String
+            - url: String
+            - urlImage: String
+            - description: String
+            - content: String
+
+            + News()
+            + getId(): String
+            + getTitle(): String
+            + getSource(): String
+            + getAuthor(): String
+            + getUrl(): String
+            + getUrlImage(): String
+            + getDescription(): String
+            + getContent(): String
+            + getPublishedAt(): String
+        }
+
+    Class ArticleNews <<Entity>>{
+
+            - id: Long
+            - title: String
+            - source: String
+            - author: String
+            - url: String
+            - urlImage: String
+            - description: String
+            - content: String
+
+            + ArticleNews()
+            + getId(): String
+            + getTitle(): String
+            + getSource(): String
+            + getAuthor(): String
+            + getUrl(): String
+            + getUrlImage(): String
+            + getDescription(): String
+            + getContent(): String
+            + getPublishedAt(): String
+        }
+
+ Interface NewsDao {
+
+            + insertNews(news: News): Long
+            + List <News>:getAll();
+            + delete(news: News):void;
+            + nukeTable():void;
+        }
+}
+
+
+
+package "Activity" #E1F4A6{
+ Class AppCompatActivity {
+}
+
+ Class MainActivity{
+
+            - id: Long
+            - title: String
+            - source: String
+            - author: String
+            - url: String
+            - urlImage: String
+            - description: String
+            - content: String
+
+            + News()
+            + getId(): String
+            + getTitle(): String
+            + getSource(): String
+            + getAuthor(): String
+            + getUrl(): String
+            + getUrlImage(): String
+            + getDescription(): String
+            + getContent(): String
+            + getPublishedAt(): String
+        }
+
+Class ActivityLaravel{
+
+            - newsList: ArrayList<>();
+            #SwipeRefreshLayout: swipeRefreshLayout;
+            - id: Long
+            - title: String
+            - source: String
+            - author: String
+            - url: String
+            - urlImage: String
+            - description: String
+            - content: String
+
+            + onCreate(Bundle savedInstanceState):
+            + onResponse(call ArticleNews<>, Response ArticleNews<> response);
+            + onFailure(call ArticleNews<>, Throwable t);
+            + onCreateOptionsMenu(Menu menu):boolean;
+            + onOptionsItemSelected( MenuItem item): boolean;
+            + openActivity(): void
+        }
+
+
+Class ModelAbstractItem{
+}
+
+class NewsItem{
+
++News
++NewsItem,
++NewsItem.ViewHolder
+
+            - DateTimeFormatter():final
+            + getViewHolder(view: View): ViewHolder
+            + getType(): int
+            + getLayoutRes(): int
+            + bindView(holder: ViewHolder, payloads: List<Object>): void
+            + unbindView( holder:ViewHolder):void
+
+}
+
+package "services" #A6F4BD {
+
+Class ApiAdapter {
+  -API_SERVICE:ApiService
+  +getApiService():ApiService
+
+}
+
+
+Class ApiService {
+  -ArticleNews[]: getNews()
+  +getApiService():ApiService
+
+}
+
+Class AppDatabase<<abstract>>{
+
+    + abstract NewsDao;
+    + AppDatabase INSTANCE;
+    + AppDatabase getInstance(Context context)
+
+  }
+
+Class CheckNetwork{
+ -TAG: String;
+ -isInternetAvailable(Context context):boolean;
+
+}
+        Interface Contracts {
+
+            + retrieveNews(size: Integer): List <News>
+            + saveNews(news: News): void
+        }
+
+        Class AppDatabase {
+
+           + getInstance(context: Context): AppDatabase
+           + newsDao(): NewsDao
+        }
+
+       Class ContractsImplNewsApi{
+
+         + ContractsImplNewsApi(String apiKey);
+         + retrieveNews(size: Integer): List <News>
+         - <T> Predicate<T> distintById(Function<? super T, ?> idExtractor)
+         -News article2news(Article article):News;
+         + saveNews(news: News): void
+
+    }
+
+    package "utils" #A6F4F1{
+
+        Class Validation {
+
+            + notNull(o: Object, message: String): void
+            + minSize(value: String, minSize: int, message: String): void
+        }
+
+        Class Converters {
+
+            + toDate(dateString: String): ZonedDateTime
+            + toDateString(date: ZonedDateTime): String
+        }
+    }
+}
+
+package "externals" #A6B0F4 {
+
+    package "org.slf4j" #fcc1ea {
+
+        Class Logger {
+           ...
+        }
+    }
+
+    package "org.threeten.bp" #fcc1ea {
+
+        Class ZonedDateTime {
+           ...
+        }
+    }
+
+    package "net.openhft.hashing" #fcc1ea {
+
+       Class LongHashFunction {
+           ...
+       }
+    }
+
+    package "android.room." #fcc1ea {
+
+       Class Room {
+           ...
+       }
+    }
+}
+NewsItem-->ModelAbstractItem:extends
+Room..>AppDatabase:extends
+ContractsImpl-->Contracts:implements
+ContractsImplNewsApi-->Contracts:implements
+AppDatabase-->MainActivity:use
+AppDatabase-->ActivityLaravel: use
+AppDatabase-->NewsDao:extends
+AppCompatActivity--|>MainActivity: use
+AppCompatActivity--|>ActivityLaravel:use
+ArticleNews--|>News:use
+MainActivity-->CheckNetwork:use
+ApiLaravel-->CheckNetwork:use
+CheckNetwork-->MainActivity:use
+NewDaoActivityLaravel-->ApiAdapter:use
+ApiAdapter-->Apiservice:implements
+ApiService-->ArticleNews:use
+Contracts ..>  News :use
+News *--> ZonedDateTime :PublishedAt
+News ..> Validation
+News ..> Converters
+News ..> LongHashFunction :use
+News *--> Room : use
+@enduml
