@@ -35,6 +35,7 @@ import com.mikepenz.fastadapter.adapters.ModelAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import cl.ucn.disc.dsm.jhidalgo.news.R;
 import cl.ucn.disc.dsm.jhidalgo.news.model.ArticleNews;
@@ -167,8 +168,12 @@ public class ActivityLaravel extends AppCompatActivity {
 
                             // Set the adapter!
                             runOnUiThread(() -> {
-                                // Display the news
-                                newsAdapter.add(newsList);
+
+                                // Display the news ordered by date
+                                newsAdapter.add(newsList.stream()
+                                        // Order by date
+                                        .sorted((k1, k2) -> k2.getPublishedAt().compareTo(k1.getPublishedAt()))
+                                        .collect(Collectors.toList()));
 
                             });
 
