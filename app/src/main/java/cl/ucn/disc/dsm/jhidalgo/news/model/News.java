@@ -23,6 +23,7 @@ import cl.ucn.disc.dsm.jhidalgo.news.utils.Validation;
 
 /**
  * The domain model: News.
+ *
  * @author Javier Hidalgo Ochoa.
  */
 @Entity
