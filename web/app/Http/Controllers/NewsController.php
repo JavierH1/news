@@ -22,25 +22,11 @@ class NewsController extends Controller
          //SELECT * FROM News
         $news = News::all();
 
-        // Return the GET request with code 200, with pagination.
-        //http://127.0.0.1:8000/api/news?page=n <-------  Example of url for the search page
-        //with "n" = page.
-
         return response()->json( $news,200);
 
         $title = $request->get('search');
         $news = News::title($title)->paginate(2);
         return view('viewnews' ,compact('News'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -105,7 +91,7 @@ class NewsController extends Controller
     public function show()
     {
         //Show the list of news in the database.
-        $data = News::paginate(3);
+        $data = News::orderBy('published_at', 'DESC') -> paginate(3);
         return view('viewnews', ['listNews' => $data]);
     }
 
