@@ -31,6 +31,7 @@ import cl.ucn.disc.dsm.jhidalgo.news.utils.Validation;
 
 /**
  * The NewsApi implementation of Contracts.
+ *
  * @author Javier Hidalgo Ochoa
  */
 public class ContractsImplNewsApi implements Contracts {
