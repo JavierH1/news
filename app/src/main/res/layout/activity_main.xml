@@ -36,7 +36,7 @@
                 android:minHeight="?attr/actionBarSize"
                 app:contentInsetStart="0dp"
                 app:contentInsetStartWithNavigation="0dp"
-                app:navigationIcon="@drawable/ic_launcher_foreground" />
+                app:navigationIcon="@mipmap/icnews1_foreground" />
 
         </LinearLayout>
 

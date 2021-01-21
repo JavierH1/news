@@ -9,7 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.Activity2">
+    tools:context=".activities.ActivityLaravel">
 
 
     <com.google.android.material.appbar.AppBarLayout
@@ -37,7 +37,7 @@
                 android:minHeight="?attr/actionBarSize"
                 app:contentInsetStart="0dp"
                 app:contentInsetStartWithNavigation="0dp"
-                app:navigationIcon="@drawable/ic_launcher_foreground" />
+                app:navigationIcon="@mipmap/icnews1_foreground" />
 
         </LinearLayout>
 
