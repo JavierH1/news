@@ -98,6 +98,7 @@ class NewsController extends Controller
     }
 
     /**
+     * Search in API news by Title
      * @param $title
      * @return \Illuminate\Http\JsonResponse
      */
@@ -113,6 +114,7 @@ class NewsController extends Controller
     }
 
     /**
+     * * Search in API news by word in content
      * @param $content
      * @return \Illuminate\Http\JsonResponse
      */
