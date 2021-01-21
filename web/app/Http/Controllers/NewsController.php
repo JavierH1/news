@@ -22,8 +22,10 @@ class NewsController extends Controller
          //SELECT * FROM News
         $news = News::all();
 
+        //Return view Api in json
         return response()->json( $news,200);
 
+        //Search in API
         $title = $request->get('search');
         $news = News::title($title)->paginate(2);
         return view('viewnews' ,compact('News'));
@@ -95,6 +97,10 @@ class NewsController extends Controller
         return view('viewnews', ['listNews' => $data]);
     }
 
+    /**
+     * @param $title
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function searchtitle($title)
 
     {
@@ -106,6 +112,10 @@ class NewsController extends Controller
 
     }
 
+    /**
+     * @param $content
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function searchcontent($content)
 
     {
