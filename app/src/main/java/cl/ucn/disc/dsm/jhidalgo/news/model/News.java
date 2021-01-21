@@ -102,15 +102,15 @@ public final class News {
     public News(String title, String source, String author, String url, String urlImage, String description, String content, ZonedDateTime publishedAt) {
 
         // Validation of title
-        Validation.minSize(title,2,"title");
+        Validation.notNull(title, "title");
         this.title = title;
 
         // Validation of source
-        Validation.minSize(source,2,"source");
+        Validation.notNull(source, "source");
         this.source = source;
 
         // Validation of author
-        Validation.minSize(author,3,"author");
+        Validation.notNull(author, "author");
         this.author = author;
 
         // Apply the xxHash function
