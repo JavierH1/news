@@ -27,6 +27,11 @@ import java.util.List;
 import cl.ucn.disc.dsm.jhidalgo.news.R;
 import cl.ucn.disc.dsm.jhidalgo.news.model.News;
 
+/**
+ * The NewsItem class
+ *
+ * @autor Javier Hidalgo Ochoa
+ */
 public final class NewsItem extends ModelAbstractItem<News, NewsItem, NewsItem.ViewHolder> {
 
     /**
