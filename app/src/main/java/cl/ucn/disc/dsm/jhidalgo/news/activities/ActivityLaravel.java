@@ -13,24 +13,33 @@ package cl.ucn.disc.dsm.jhidalgo.news.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.adapters.ModelAdapter;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import cl.ucn.disc.dsm.jhidalgo.news.R;
+import cl.ucn.disc.dsm.jhidalgo.news.model.ArticleNews;
 import cl.ucn.disc.dsm.jhidalgo.news.model.News;
+import cl.ucn.disc.dsm.jhidalgo.news.services.ApiAdapter;
 import cl.ucn.disc.dsm.jhidalgo.news.services.AppDatabase;
 import cl.ucn.disc.dsm.jhidalgo.news.services.CheckNetwork;
 import cl.ucn.disc.dsm.jhidalgo.news.services.Contracts;
@@ -39,12 +48,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Activity2 extends AppCompatActivity implements Callback<ArrayList<News>> {
+/**
+ * The Secondary Class, used to display the news from laravel
+ *
+ * @autor Javier Hidalgo Ochoa
+ */
+public class ActivityLaravel extends AppCompatActivity {
 
     /**
-     * The listView.
+     * The list where the news will be save
      */
-    protected ListView listView;
+    ArrayList<News> newsList = new ArrayList<>();
 
     /**
      * The swipeRefreshLayout.
@@ -62,16 +76,38 @@ public class Activity2 extends AppCompatActivity implements Callback<ArrayList<N
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity2);
 
-        // The switch
+        // Check if Fresco has Been Initialized
+        if(!Fresco.hasBeenInitialized()) {
+            Fresco.initialize(this);
+        }
+
+        Toolbar toolbar;
+        // The toolbar
+        this.setSupportActionBar(findViewById(R.id.am_t_toolbar));
+        toolbar = (Toolbar) findViewById(R.id.am_t_toolbar);
+        toolbar.setSubtitle("LaravelNews");
+
+        // The FastAdapter
+        ModelAdapter<News, NewsItem> newsAdapter = new ModelAdapter<>(NewsItem::new);
+        FastAdapter<NewsItem> fastAdapter = FastAdapter.with(newsAdapter);
+        fastAdapter.withSelectable(false);
+
+        // The Recycler view
+        RecyclerView recyclerView = findViewById(R.id.am_rv_news);
+        recyclerView.setAdapter(fastAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        // The switch button
         Switch switchButton = findViewById(R.id.switch_2);
         switchButton.setChecked(true);
 
         // The Swipe refresh layout
         swipeRefreshLayout = findViewById(R.id.am_swl_refresh);
 
-        // The call to the laravel api
-        Call<ArrayList<News>> call = ApiAdapter.getApiService().getNews();
-        call.enqueue(this);
+        // Database instance
+        AppDatabase db2 = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "newsDB2").enableMultiInstanceInvalidation().build();
 
         AsyncTask.execute(() -> {
 
@@ -79,17 +115,10 @@ public class Activity2 extends AppCompatActivity implements Callback<ArrayList<N
             switchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    db2.close();
                     openActivity();
                 }
             });
-            // Switch listener on scroll
-            switchButton.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    openActivity();
-                }
-            });
-
 
             // Swipe refresh listener
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
@@ -100,35 +129,87 @@ public class Activity2 extends AppCompatActivity implements Callback<ArrayList<N
                 }
             });
 
-
         });
 
-        // Database instance
-        AppDatabase db2 = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "newsDB").enableMultiInstanceInvalidation().build();
-
-        // Using the contracts to get the news ..
+        // Using the contracts to save the news
         Contracts contracts = new ContractsImplNewsApi("6bccb50265334579b044cc5077e600ed");
 
         // Returns true if internet available
-        if(CheckNetwork.isInternetAvailable(Activity2.this)) {
+        if(CheckNetwork.isInternetAvailable(ActivityLaravel.this)) {
 
-            // The toolbar
-            this.setSupportActionBar(findViewById(R.id.am_t_toolbar));
+             // The call to the laravel api
+            Call<ArrayList<ArticleNews>> call = ApiAdapter.getApiService().getNews();
+            call.enqueue(new Callback<ArrayList<ArticleNews>>() {
+                @Override
+                public void onResponse(Call<ArrayList<ArticleNews>> call, Response<ArrayList<ArticleNews>> response) {
+
+                    if(response.isSuccessful()){
+                        int x= response.body().size();
+
+                        for(int i=0;i<x;i++){
+                            News news = new News(response.body().get(i).getTitle()
+                                    ,response.body().get(i).getSource()
+                                    ,response.body().get(i).getAuthor()
+                                    ,response.body().get(i).getUrl()
+                                    ,response.body().get(i).getUrl_image()
+                                    ,response.body().get(i).getDescription()
+                                    ,response.body().get(i).getContent()
+                                    ,org.threeten.bp.ZonedDateTime.parse(response.body().get(i).getPublished_at()));
+
+                            // Add the news to the list
+                            newsList.add(news);
+
+                        }
+
+                        AsyncTask.execute(() -> {
+                            // Save the news into the database
+                            contracts.saveNews(db2, newsList);
+
+                            // Set the adapter!
+                            runOnUiThread(() -> {
+                                // Display the news
+                                newsAdapter.add(newsList);
+
+                            });
+
+                        });
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<ArticleNews>> call, Throwable t) {
+
+                    // Display message onFailure
+                    Toast.makeText(ActivityLaravel.this,"Can't connect to the server",Toast.LENGTH_LONG).show();
+
+                }
+            });
 
         }
         // If no internet connection is available
         else {
 
-            Toolbar toolbar;
-
-            // The toolbar
-            this.setSupportActionBar(findViewById(R.id.am_t_toolbar));
-
             // Change the title of the toolbar
             toolbar = (Toolbar) findViewById(R.id.am_t_toolbar);
             toolbar.setTitle("News (No Internet)");
+            toolbar.setSubtitle("LaravelNews");
             this.setSupportActionBar(toolbar);
+
+            // Display a message of "no internet connection available"
+            Toast.makeText(ActivityLaravel.this,"No Internet Connection",Toast.LENGTH_LONG).show();
+
+            AsyncTask.execute(() -> {
+
+                // Get the News from the Room Database (with NO internet!)
+                List<News> listNews = db2.newsDao().getAll();
+
+                // Set the adapter!
+                runOnUiThread(() -> {
+                    newsAdapter.add(listNews);
+                });
+
+            });
 
         }
 
@@ -138,11 +219,11 @@ public class Activity2 extends AppCompatActivity implements Callback<ArrayList<N
      * Open the MainActivity when clicking the switch
      */
     public void openActivity (){
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
     }
-
 
     /**
      * Initialize the contents of the Activity's standard options menu.  You
@@ -214,41 +295,5 @@ public class Activity2 extends AppCompatActivity implements Callback<ArrayList<N
         recreate();
         return true;
     }
-
-
-
-    /**
-     * Invoked for a received HTTP response.
-     * <p>
-     * Note: An HTTP response may still indicate an application-level failure such as a 404 or 500.
-     * Call {@link Response#isSuccessful()} to determine if the response indicates success.
-     *
-     * @param call
-     * @param response
-     */
-    @Override
-    public void onResponse(Call<ArrayList<News>> call, Response<ArrayList<News>> response) {
-
-        if(response.isSuccessful()){
-            ArrayList<News> newsFromApi = response.body();
-            Log.d("ON RESPONSE", "VARIABLE = " + newsFromApi.get(0).getAuthor());
-
-        }
-
-    }
-
-    /**
-     * Invoked when a network exception occurred talking to the server or when an unexpected
-     * exception occurred creating the request or processing the response.
-     *
-     * @param call
-     * @param t
-     */
-    @Override
-    public void onFailure(Call<ArrayList<News>> call, Throwable t) {
-
-
-    }
-
 
 }
