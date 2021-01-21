@@ -77,7 +77,28 @@ public class MainActivity extends AppCompatActivity  {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Fresco.initialize(this);
+
+        // Check if Fresco has Been Initialized
+        if(!Fresco.hasBeenInitialized()) {
+            Fresco.initialize(this);
+        }
+
+        Toolbar toolbar;
+        // The toolbar
+        this.setSupportActionBar(findViewById(R.id.am_t_toolbar));
+        toolbar = (Toolbar) findViewById(R.id.am_t_toolbar);
+        toolbar.setSubtitle("ApiNews");
+
+        // The FastAdapter
+        ModelAdapter<News, NewsItem> newsAdapter = new ModelAdapter<>(NewsItem::new);
+        FastAdapter<NewsItem> fastAdapter = FastAdapter.with(newsAdapter);
+        fastAdapter.withSelectable(false);
+
+        // The Recycler view
+        RecyclerView recyclerView = findViewById(R.id.am_rv_news);
+        recyclerView.setAdapter(fastAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         // The switch
         Switch switchButton = findViewById(R.id.switch_1);
@@ -110,33 +131,11 @@ public class MainActivity extends AppCompatActivity  {
         AppDatabase db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "newsDB").build();
 
-
-
         // Using the contracts to get the news ..
         Contracts contracts = new ContractsImplNewsApi("6bccb50265334579b044cc5077e600ed");
 
-
-
         // Returns true if internet available
         if(CheckNetwork.isInternetAvailable(MainActivity.this)) {
-
-            // Delete the stored news when accessing the internet
-            Thread t = new Thread(() -> AppDatabase.getInstance(getApplicationContext()).newsDao().nukeTable());
-            t.start();
-
-            // The toolbar
-            this.setSupportActionBar(findViewById(R.id.am_t_toolbar));
-
-            // The FastAdapter
-            ModelAdapter<News, NewsItem> newsAdapter = new ModelAdapter<>(NewsItem::new);
-            FastAdapter<NewsItem> fastAdapter = FastAdapter.with(newsAdapter);
-            fastAdapter.withSelectable(false);
-
-            // The Recycler view
-            RecyclerView recyclerView = findViewById(R.id.am_rv_news);
-            recyclerView.setAdapter(fastAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
             // Get the news in the background thread
             AsyncTask.execute(() -> {
@@ -159,26 +158,11 @@ public class MainActivity extends AppCompatActivity  {
         // If no internet connection is available
         else {
 
-            Toolbar toolbar;
-
-            // The toolbar
-            this.setSupportActionBar(findViewById(R.id.am_t_toolbar));
-
             // Change the title of the toolbar
             toolbar = (Toolbar) findViewById(R.id.am_t_toolbar);
             toolbar.setTitle("News (No Internet)");
+            toolbar.setSubtitle("LaravelNews");
             this.setSupportActionBar(toolbar);
-
-            // The FastAdapter
-            ModelAdapter<News, NewsItem> newsAdapter = new ModelAdapter<>(NewsItem::new);
-            FastAdapter<NewsItem> fastAdapter = FastAdapter.with(newsAdapter);
-            fastAdapter.withSelectable(false);
-
-            // The Recycler view
-            RecyclerView recyclerView = findViewById(R.id.am_rv_news);
-            recyclerView.setAdapter(fastAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
             // Display a message of "no internet connection available"
             Toast.makeText(MainActivity.this,"No Internet Connection",Toast.LENGTH_LONG).show();
@@ -203,8 +187,9 @@ public class MainActivity extends AppCompatActivity  {
      * Open the activity2 when clicking the switch
      */
     public void openActivity2 (){
-        Intent intent = new Intent(this, Activity2.class);
+        Intent intent = new Intent(this, ActivityLaravel.class);
         startActivity(intent);
+
     }
 
     /**
