@@ -3,7 +3,7 @@
 - **Degree**: Ingeniería en Computación e Informática.
 
 ## Description
-- Proyecto final sobre una API que permita desplegar, registrar y guardar noticias en una base de datos.
+- Proyecto final sobre una API, página web y aplicación Móvil que permita desplegar, registrar y guardar noticias en una base de datos.
 
 ##  Status
 - En desarrollo.
@@ -13,14 +13,14 @@
 - PHP 7.4.13 y PHP 8.0.0
 - Bootstrap 4 
 - Laravel 8
-- PhpStorm -actualizar versión-
+- PhpStorm 2020.3
 - Blade
-- Android Studio -agregar version-
+- Android Studio 4.1.1
 - HTML, CSS
-- Gradle -agregar version-
-- SQLite -agregar version-
+- Gradle 6.5
+- SQLite 3.6.6
 
 ## Developers
 - Beatriz Álvarez-Rojas.
-- Javier Hidalgo
-- Gonzalo Cornejo
+- Javier Hidalgo- Ochoa
+- Gonzalo Cornejo-Araya
