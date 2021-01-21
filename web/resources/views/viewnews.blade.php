@@ -1,5 +1,5 @@
 @section('content')
-<!doctype html>
+    <!doctype html>
 <html>
 <!-- Image and text navbar-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -14,10 +14,6 @@
                     <a class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/registernews">Registro de noticias</a>
                 </li>
             </ul>
-            <!-- <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>-->
         </div>
     </div>
 </nav>
@@ -25,16 +21,17 @@
 
 <head>
 
-   <div class="container">
-       <!-- Content here -->
+    <div class="container">
+        <!-- Content here -->
         <br>
     </div>
     <meta charset="utf-8">
     <title>View of news</title>
     <meta name="description" content="views news">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+   <link rel="stylesheet"  href = "https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap5.min.css">
+
 </head>
 <body>
 <div class="container">
@@ -45,23 +42,25 @@
 
     </div>
 
-    <table class ="table-light table-bordered">
+    <table class =" table table-bordered">
         <tr>
-            <td>id</td>
-            <td>Título</td>
-            <td>Autor</td>
-            <td>Fuente</td>
-            <td>URL</td>
-            <td>Imagen</td>
-            <td>Descripcion</td>
-            <td>Contenido</td>
-            <td>Fecha</td>
-            <td>Operación</td>
+            <th scope="row">id</th>
+            <th scope="row">Titulo</th>
+            <th scope="row">Autor</th>
+            <th scope="row">Fuente</th>
+            <th scope="row">URL</th>
+            <th scope="row">URLImagen</th>
+            <th scope="row">Descripción</th>
+            <th scope="row">Contenido</th>
+            <th scope="row">Fecha</th>
+            <th scope="row">Operación</th>
 
         </tr>
-        @foreach($listNews as $news)
+        </thead>
 
-            <tr>
+        @foreach($listNews as $news)
+            <tbody>
+
                 <td>{{$news['id']}}</td>
                 <td>{{$news['title']}}</td>
                 <td>{{$news['author']}}</td>
@@ -74,14 +73,16 @@
                 <td>
 
 
-                <a href = "{{"edit/".$news['id']}}" class="btn btn-primary btn-sm active" role=" button"
-                aria-pressed="=true">Editar</a>
-                <a href = "{{"delete/".$news['id']}}" class="btn btn-danger btn-sm active"
-                   onclick="return confirm('¿Desea borrar esta noticia seleccionada?')"
-                   role=" button"
-                   aria-pressed="=true">Borrar</a>
+
+                    <a href = "{{"edit/".$news['id']}}" class="btn btn-primary btn-sm active" role=" button"
+                       aria-pressed="=true">Editar</a>
+                    <a href = "{{"delete/".$news['id']}}" class="btn btn-danger btn-sm active"
+                       onclick="return confirm('¿Desea borrar esta noticia seleccionada?')"
+                       role=" button"
+                       aria-pressed="=true">Borrar</a>
                 </td>
             </tr>
+        </tbody>
         @endforeach
     </table>
     <div class="text-xs-center">
@@ -113,9 +114,9 @@
 
         <!-- Copyright -->
         <div class="text-center p-4" style="background-color: #FAFAFA;">
-        © 2021 Copyright:
-        <a class="text-dark" href="https://mdbootstrap.com/">UCN - Desarrollo de Soluciones moviles</a>
-    </div>
+            © 2021 Copyright:
+            <a class="text-dark" href="https://mdbootstrap.com/">UCN - Desarrollo de Soluciones moviles</a>
+        </div>
     </div>
 
     <!-- Copyright -->
