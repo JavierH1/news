@@ -8,14 +8,18 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package cl.ucn.disc.dsm.jhidalgo.news.activities;
+package cl.ucn.disc.dsm.jhidalgo.news.services;
 
-import cl.ucn.disc.dsm.jhidalgo.news.services.ApiService;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * The ApiAdapter to connect to laravel
+ *
+ * @author Javier Hidalgo Ochoa.
+ */
 public class ApiAdapter {
 
     private static ApiService API_SERVICE;
@@ -30,13 +34,13 @@ public class ApiAdapter {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(logging);
 
-        String baseUrl = "http://10.0.2.2:8000/";
+        String baseUrl = "http://10.0.2.2:8000/api/";
 
         if (API_SERVICE == null) {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .client(httpClient.build()) // <-- usamos el log level
+                    .client(httpClient.build())
                     .build();
             API_SERVICE = retrofit.create(ApiService.class);
         }

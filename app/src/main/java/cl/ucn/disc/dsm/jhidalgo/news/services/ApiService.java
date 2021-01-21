@@ -12,12 +12,17 @@ package cl.ucn.disc.dsm.jhidalgo.news.services;
 
 import java.util.ArrayList;
 
-import cl.ucn.disc.dsm.jhidalgo.news.model.News;
+import cl.ucn.disc.dsm.jhidalgo.news.model.ArticleNews;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
+/**
+ * The interface with the routes
+ *
+ * @author Javier Hidalgo Ochoa.
+ */
 public interface ApiService {
 
-    @GET("api/news/")
-    Call <ArrayList<News>> getNews();
+    @GET("news/")
+    Call <ArrayList<ArticleNews>> getNews();
 }

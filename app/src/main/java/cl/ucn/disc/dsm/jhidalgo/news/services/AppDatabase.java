@@ -21,7 +21,11 @@ import cl.ucn.disc.dsm.jhidalgo.news.model.News;
 import cl.ucn.disc.dsm.jhidalgo.news.model.NewsDao;
 import cl.ucn.disc.dsm.jhidalgo.news.utils.Converters;
 
-
+/**
+ * The Room AppDataBase
+ *
+ * @author Javier Hidalgo Ochoa
+ */
 @Database(entities = {News.class}, version = 1)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {

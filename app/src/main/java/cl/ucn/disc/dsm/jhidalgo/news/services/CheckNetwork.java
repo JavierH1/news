@@ -17,12 +17,12 @@ import android.util.Log;
 
 /**
  * Class to check if there is internet connection
+ *
  * @author Javier Hidalgo Ochoa.
  */
 public class CheckNetwork {
 
     private static final String TAG = CheckNetwork.class.getSimpleName();
-
 
     /**
      * Check the internet connection is available

@@ -23,7 +23,8 @@ import java.util.List;
 import cl.ucn.disc.dsm.jhidalgo.news.model.News;
 
 /**
- * The Faker implementation of {@link Contracts} *
+ * The Faker implementation of {@link Contracts}
+ *
  * @author Javier Hidalgo Ochoa
  */
 public final class ContractsImplFaker implements Contracts {
