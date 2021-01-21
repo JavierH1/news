@@ -11,7 +11,7 @@
 
 ##  Technologies
 - PHP 7.4.7
-- Bootstrap 4 
+- Bootstrap 5 
 - Laravel 8
 - PhpStorm 3.1
 - Android Studio -agregar version-
