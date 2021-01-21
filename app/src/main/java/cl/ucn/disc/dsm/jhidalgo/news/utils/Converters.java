@@ -14,6 +14,11 @@ import androidx.room.TypeConverter;
 
 import org.threeten.bp.ZonedDateTime;
 
+/**
+ * The converter of ZonedDateTime and String for Room DataBase
+ *
+ * @author Javier Hidalgo Ochoa
+ */
 public class Converters {
 
     @TypeConverter
